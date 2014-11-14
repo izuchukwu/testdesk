@@ -118,63 +118,44 @@
 			
 			<section class="no-pad clearfix">
 				
-				<div class="col-md-4 col-sm-12 no-pad">
-				
-					<div class="feature-box">
-					
-						<div class="background-image-holder overlay">
-							<img class="background-image" alt="Background Image" src="img/box2.jpg">
-						</div>
-						
-						<div class="inner">
-							<span class="alt-font text-white">Field</span>
-							<h1 class="text-white">Study Title</h1>
-							<p class="text-white">
-								Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. 
-							</p>
-							<a href="#" class="btn btn-primary btn-white">Tell Me More</a>
-						</div>
-					</div>
-					
-				</div>
-				
-				<div class="col-md-4 col-sm-12 no-pad">
-				
-					<div class="feature-box">
-					
-						<div class="background-image-holder overlay">
-							<img class="background-image" alt="Background Image" src="img/hero1.jpg">
-						</div>
-						
-						<div class="inner">
-							<span class="alt-font text-white">Field</span>
-							<h1 class="text-white">Study Title</h1>
-							<p class="text-white">
-								Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. 
-							</p>
-							<a href="#" class="btn btn-primary btn-white">Tell Me More</a>
-						</div>
-					</div>
-				</div>
+				<?php
+					/*
+					// Create connection
+					$con = mysqli_connect("localhost","root","","wordpress");
 
-				<div class="col-md-4 col-sm-12 no-pad">
-				
-					<div class="feature-box">
-					
-						<div class="background-image-holder overlay">
-							<img class="background-image" alt="Background Image" src="img/box2.jpg">
-						</div>
+					// Check connection
+					if (mysqli_connect_errno())
+					{
+						echo "Failed to connect to MySQL: " . mysqli_connect_error();
+					}
+
+					//Take User 1's first 3 studies
+					$result = mysqli_query($con, "SELECT * FROM Studies WHERE userID = 1");
+
+					for($count = 0; $count < 3; $count++)
+					{
+						$row = mysqli_fetch_array($result)
+						//echo $row["studyField"];
+						echo '<div class="col-md-4 col-sm-12 no-pad">
 						
-						<div class="inner">
-							<span class="alt-font text-white">Field</span>
-							<h1 class="text-white">Study Title</h1>
-							<p class="text-white">
-								Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. 
-							</p>
-							<a href="#" class="btn btn-primary btn-white">Tell Me More</a>
-						</div>
-					</div>
-				</div>
+							<div class="feature-box">
+							
+								<div class="background-image-holder overlay">
+									<img class="background-image" alt="Background Image" src="img/box2.jpg">
+								</div>
+								
+								<div class="inner">
+									<span class="alt-font text-white">'.$row["studyField"].'</span>
+									<h1 class="text-white">'.$row["studyName"].'</h1>
+									<p class="text-white">'.$row["studyDesription"].'</p>
+									<a href="#" class="btn btn-primary btn-white">Tell Me More</a>
+								</div>
+							</div>
+							
+						</div>';
+					}*/
+				?>
+
 			</section>
 
 			<section class="feature-selector">
