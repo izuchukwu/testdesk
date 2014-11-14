@@ -146,7 +146,7 @@
 								<div class="inner">
 									<span class="alt-font text-white">'.$row["studyField"].'</span>
 									<h1 class="text-white">'.$row["studyName"].'</h1>
-									<p class="text-white">'.$row["studyDesription"].'</p>
+									<p class="text-white">'.$row["studyDescription"].'</p>
 									<a href="#" class="btn btn-primary btn-white">Tell Me More</a>
 								</div>
 							</div>
