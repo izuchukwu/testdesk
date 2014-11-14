@@ -119,7 +119,6 @@
 			<section class="no-pad clearfix">
 				
 				<?php
-					/*
 					// Create connection
 					$con = mysqli_connect("localhost","root","","wordpress");
 
@@ -134,7 +133,7 @@
 
 					for($count = 0; $count < 3; $count++)
 					{
-						$row = mysqli_fetch_array($result)
+						$row = mysqli_fetch_array($result);
 						//echo $row["studyField"];
 						echo '<div class="col-md-4 col-sm-12 no-pad">
 						
@@ -153,7 +152,7 @@
 							</div>
 							
 						</div>';
-					}*/
+					}
 				?>
 
 			</section>
