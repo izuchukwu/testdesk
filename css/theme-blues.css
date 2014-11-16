@@ -7,6 +7,9 @@
 .bg-secondary-2 {
   background-color: #1a8bb3 !important;
 }
+.bg-light {
+  background-color: #f1f1f1 !important;
+}
 .bg-white {
   background-color: #fff !important;
 }
@@ -1430,13 +1433,33 @@ img.phone-portrait {
   padding: 0px;
   margin-bottom: 32px;
 }
+
+.icons-large-white {
+  list-style: none;
+  overflow: hidden;
+  display: inline-block;
+  padding: 0px;
+  margin-bottom: 32px;
+}
+
 .icons-large li {
   float: left;
   margin-right: 48px;
   font-size: 48px;
   color: #136480;
 }
+
+.icons-large-white li {
+  float: left;
+  margin-right: 48px;
+  font-size: 48px;
+  color: #ffffff;
+}
+
 .icons-large li:last-child {
+  margin-right: 0px;
+}
+.icons-large-white li:last-child {
   margin-right: 0px;
 }
 .text-banner h1 {
@@ -1446,6 +1469,9 @@ img.phone-portrait {
   margin-bottom: 32px;
 }
 .accordion-section .icons-large {
+  margin-bottom: 0px;
+}
+.accordion-section .icons-large-white {
   margin-bottom: 0px;
 }
 .accordion-section .feature {
