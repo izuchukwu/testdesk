@@ -22,7 +22,22 @@
         <script src="js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     </head>
     <body>
-				
+		<?php
+			// Create connection
+			$con = mysqli_connect("localhost","root","","wordpress");
+
+			// Check connection
+			if (mysqli_connect_errno())
+			{
+			  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+			}
+
+			$result = mysqli_query($con, "SELECT * FROM Users WHERE utdID = '".$_COOKIE['loggedinID']."'");
+			$user = mysqli_fetch_array($result);
+
+			$userStudies = mysqli_query($con, "SELECT * FROM Studies WHERE userID = '".$user['userID']."'");
+
+		?>
 		<div class="nav-container">
 			<nav class="top-bar overlay-bar">
 				<div class="container">
@@ -33,7 +48,7 @@
 								<a href="http://utdallas.edu/"><span class="alt-font">The University of Texas at Dallas</span></a>
 							
 								<div class="pull-right">
-									<a href="signup.html" class="btn btn-primary btn-filled btn-xs" style="visibility:hidden;">Signup</a>
+									<a href="signup.php" class="btn btn-primary btn-filled btn-xs" style="visibility:hidden;">Signup</a>
 								</div>
 							</div>
 						</div>
@@ -42,7 +57,7 @@
 				
 					<div class="row nav-menu text-right">
 						<div class="col-sm-3 col-md-2 columns">
-							<a href="index.html">
+							<a href="index.php">
 								<img class="logo logo-light" alt="Logo" src="img/logo-light.png">
 								<img class="logo logo-dark" alt="Logo" src="img/logo-dark.png">
 							</a>
@@ -50,12 +65,12 @@
 					
 						<div class="col-sm-9 col-md-10 columns">
 							<ul class="menu">
-								<li class=""><a href="studies.html">Open Studies</a></li>
+								<li class=""><a href="studies.php">Open Studies</a></li>
 								<li class=""><a href="#">Dashboard</a></li>
 								<li class="has-dropdown"><a href="#">Account</a>
 									<ul class="subnav">
 										<li><a href="#">Account Settings</a></li>
-										<li><a href="index.html">Sign Out</a></li>
+										<li><a href="signout.php">Sign Out</a></li>
 									</ul>
 								</li>
 							</ul>
@@ -79,12 +94,12 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-md-6 col-sm-12">
-							<span class="text-white alt-font">Welcome Back.</span>
+							<span class="text-white alt-font">Welcome Back, <?php echo $user['name']?></span>
 							<h1 class="text-white">Dashboard</h1>
 						</div>
 
 						<div class="col-md-6 col-sm-12">
-							<h1 class="text-white pull-right">1 Active Study<br></h1>
+							<h1 class="text-white pull-right"><?php echo $userStudies->num_rows;?> Active Study<br></h1>
 						</div>
 					</div><!--end of row-->
 				</div><!--end of container-->
@@ -101,31 +116,38 @@
 					<div class="row">
 						<div class="blog-masonry-container">
 						
-							<div class="col-md-4 col-sm-6 blog-masonry-item branding">
-								<div class="item-inner">
-									<a href="blog-single.html">
-										<img alt="Blog Preview" src="img/blog-masonry-1.jpg">
-									</a>
-									<div class="post-title">
-										<span class="sub alt-font">Office of Diversity &amp; Community Engagement</span><br>
-										<h2>Student Engagement Study</h2>
-										<p>
-											A study in the engagement of the student population in campus activities and events.
-											<br><br><a href="#">Add or Edit Questionnaires</a>
-											<br><a href="#">Add or Edit Time Slots</a>
-										</p>
-										<div class="post-meta">
-											<span class="sub alt-font">4 Participants</span>
+							<?php
+								while($row = mysqli_fetch_array($userStudies))
+								{
+									?>
+									<div class="col-md-4 col-sm-6 blog-masonry-item branding">
+										<div class="item-inner">
+											<a href="blog-single.php">
+												<img alt="Blog Preview" src="img/blog-masonry-1.jpg">
+											</a>
+											<div class="post-title">
+												<span class="sub alt-font"><?php echo $row['studyField'];?></span><br>
+												<h2><?php echo $row['studyName'];?></h2>
+												<p>
+													<?php echo $row['studyDescription'];?>
+													<br><br><a href="#">Add or Edit Questionnaires</a>
+													<br><a href="#">Add or Edit Time Slots</a>
+												</p>
+												<div class="post-meta">
+													<span class="sub alt-font">4 Participants</span>
+												</div>
+												<div class="row">
+													<a href="#" class="link-text">View/Edit Study</a>
+												</div>
+											</div>
 										</div>
-										<div class="row">
-											<a href="#" class="link-text">View/Edit Study</a>
-										</div>
-									</div>
-								</div>
-							</div><!--end of individual post-->
+									</div><!--end of individual post-->
+									<?php
+								}
+							?>
 							
 							<div class="col-md-4 col-sm-6 blog-masonry-item development">
-								<a href="new-study-hiatus.html"><div class="item-inner">
+								<a href="new-study-hiatus.php"><div class="item-inner">
 									<div class="post-title">
 										<div class="feature feature-icon-large">
 											<i class="icon icon-lightbulb"></i>

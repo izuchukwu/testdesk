@@ -1,4 +1,9 @@
-
+<?php
+	if(!empty($_COOKIE['loggedinID']))
+	{
+		header('location:http://127.0.0.1:4001/wordpress/dashboard.php');
+	}
+?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -21,7 +26,6 @@
         <script src="js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     </head>
     <body>
-				
 		<div class="nav-container">
 			<nav class="top-bar overlay-bar">
 				<div class="container">
@@ -32,8 +36,8 @@
 								<a href="http://utdallas.edu/"><span class="alt-font">The University of Texas at Dallas</span></a>
 							
 								<div class="pull-right">
-									<a href="index.html#learn_more" class="btn btn-primary btn-white btn-xs">Learn More</a>
-									<a href="signup.html" class="btn btn-primary btn-filled btn-xs">Signup</a>
+									<a href="index.php#learn_more" class="btn btn-primary btn-white btn-xs">Learn More</a>
+									<a href="signup.php" class="btn btn-primary btn-filled btn-xs">Signup</a>
 								</div>
 							</div>
 						</div>
@@ -42,7 +46,7 @@
 				
 					<div class="row nav-menu text-right">
 						<div class="col-sm-3 col-md-2 columns">
-							<a href="index.html">
+							<a href="index.php">
 								<img class="logo logo-light" alt="Logo" src="img/logo-light.png">
 								<img class="logo logo-dark" alt="Logo" src="img/logo-dark.png">
 							</a>
@@ -50,9 +54,9 @@
 					
 						<div class="col-sm-9 col-md-10 columns">
 							<ul class="menu">
-								<li class=""><a href="studies.html">Open Studies</a></li>
+								<li class=""><a href="studies.php">Open Studies</a></li>
 								<li class=""><a href="#">Start a Study</a></li>
-								<li class=""><a href="index.html#footer">Contact</a></li>
+								<li class=""><a href="index.php#footer">Contact</a></li>
 							</ul>
 						</div>
 					</div><!--end of row-->
@@ -75,16 +79,16 @@
 					<div class="row">
 						<div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 text-center">
 							<h1 class="text-white">Sign In to continue</h1>
-							<span class="text-white">Starting a study requires a researcher account. Sign In to get started. If you're just looking for participation opportunities, check out the <a href="studies.html">open study directory.</a><br/><br/><br></span>
+							<span class="text-white">Starting a study requires a researcher account. Sign In to get started. If you're just looking for participation opportunities, check out the <a href="studies.php">open study directory.</a><br/><br/><br></span>
 							<div class="photo-form-wrapper clearfix">
-								<form>
-									<input class="form-email" type="text" placeholder="UTD NetID">
-									<input class="form-password" type="password" placeholder="Password">
+								<form action="/wordpress/processlogin.php" method="post">
+									<input class="form-email" type="text" placeholder="UTD NetID" name="utdID">
+									<input class="form-password" type="password" placeholder="Password" name="password">
 									<input class="login-btn btn-filled" type="submit" value="Login">
 								</form>
 							</div><!--end of photo form wrapper-->
-							<a href="signup.html" class="text-white">Don't have a researcher account? Sign Up ➞</a><br>
-							<a href="signup-requested.html" class="text-white">Forgotten your password? No problem.</a>
+							<a href="signup.php" class="text-white">Don't have a researcher account? Sign Up ➞</a><br>
+							<a href="signup-requested.php" class="text-white">Forgotten your password? No problem.</a>
 						</div>
 					</div><!--end of row-->
 				</div><!--end of container-->

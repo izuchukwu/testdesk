@@ -21,6 +21,22 @@
         <script src="js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     </head>
     <body>
+    	<?php
+    		// Create connection
+			$con = mysqli_connect("localhost","root","","wordpress");
+
+			// Check connection
+			if (mysqli_connect_errno())
+			{
+				echo "Failed to connect to MySQL: " . mysqli_connect_error();
+			}
+
+			$result = mysqli_query($con, "SELECT * FROM Studies WHERE studyID = ".$_GET['id']);
+			$study = mysqli_fetch_array($result);
+
+			$result = mysqli_query($con, "SELECT * FROM Users WHERE userID = ".$study['userID']);
+			$user = mysqli_fetch_array($result);
+    	?>
 		<div class="nav-container">
 			<nav class="top-bar overlay-bar">
 				<div class="container">
@@ -31,8 +47,8 @@
 								<a href="http://utdallas.edu/"><span class="alt-font">The University of Texas at Dallas</span></a>
 							
 								<div class="pull-right">
-									<a href="index.html#learn_more" class="btn btn-primary btn-white btn-xs">Learn More</a>
-									<a href="signup.html" class="btn btn-primary btn-filled btn-xs">Signup</a>
+									<a href="index.php#learn_more" class="btn btn-primary btn-white btn-xs">Learn More</a>
+									<a href="signup.php" class="btn btn-primary btn-filled btn-xs">Signup</a>
 								</div>
 							</div>
 						</div>
@@ -41,7 +57,7 @@
 				
 					<div class="row nav-menu text-right">
 						<div class="col-sm-3 col-md-2 columns">
-							<a href="index.html">
+							<a href="index.php">
 								<img class="logo logo-light" alt="Logo" src="img/logo-light.png">
 								<img class="logo logo-dark" alt="Logo" src="img/logo-dark.png">
 							</a>
@@ -49,8 +65,8 @@
 					
 						<div class="col-sm-9 col-md-10 columns">
 							<ul class="menu">
-								<li class=""><a href="studies.html">Open Studies</a></li>
-								<li class=""><a href="signin.html">Start a Study</a></li>
+								<li class=""><a href="studies.php">Open Studies</a></li>
+								<li class=""><a href="signin.php">Start a Study</a></li>
 								<li class=""><a href="#footer">Contact</a></li>
 							</ul>
 						</div>
@@ -62,9 +78,6 @@
 					
 				</div><!--end of container-->
 			</nav>
-		
-			
-		
 			
 		</div>
 		<div class="main-container">
@@ -76,8 +89,8 @@
 					<div class="container align-bottom">
 						<div class="row">
 							<div class="col-xs-12">
-								<h1 class="text-white">User Experience Paradigm Study</h1>
-								<span class="sub alt-font text-white">Arts &amp; Technology</span>
+								<h1 class="text-white"><?php echo $study['studyName'];?></h1>
+								<span class="sub alt-font text-white"><?php echo $study['studyField'];?></span>
 							</div>
 						</div><!--end of row-->
 					</div><!--end of container-->
@@ -90,7 +103,7 @@
 							<div class="author-details no-pad-top">
 								<img alt="Author" src="img/ppl/marky.png">
 								<br>
-								<h5>David E. Daniel</h5>
+								<h5><?php echo $user['name'];?></h5>
 								<p>Senior Lecturer</p>
 								<ul class="social-icons">
 								<li>
@@ -111,7 +124,7 @@
 						<div class="col-sm-8">
 							<div class="article-body">
 								<p class="lead">
-									A call for participation for a research study investigating the effectiveness of a potential new user experience paradigm for mobile devices. 
+									<?php echo $study['studyDescription'];?> 
 								</p>
 							
 								<p>

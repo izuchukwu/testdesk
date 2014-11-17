@@ -8,7 +8,7 @@
     <head>
         <meta charset="utf-8">
         
-        <title>Sign Up | TestDesk</title>
+        <title>TestDesk | Supercharging Research</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -34,7 +34,7 @@
 							
 								<div class="pull-right">
 									<a href="#learn_more" class="btn btn-primary btn-white btn-xs">Learn More</a>
-									<a href="#" class="btn btn-primary btn-filled btn-xs">Signup</a>
+									<a href="signup.php" class="btn btn-primary btn-filled btn-xs">Signup</a>
 								</div>
 							</div>
 						</div>
@@ -43,7 +43,7 @@
 				
 					<div class="row nav-menu text-right">
 						<div class="col-sm-3 col-md-2 columns">
-							<a href="index.html">
+							<a href="index.php">
 								<img class="logo logo-light" alt="Logo" src="img/logo-light.png">
 								<img class="logo logo-dark" alt="Logo" src="img/logo-dark.png">
 							</a>
@@ -51,8 +51,8 @@
 					
 						<div class="col-sm-9 col-md-10 columns">
 							<ul class="menu">
-								<li class=""><a href="studies.html">Open Studies</a></li>
-								<li class=""><a href="signin.html">Start a Study</a></li>
+								<li class=""><a href="studies.php">Open Studies</a></li>
+								<li class=""><a href="signin.php">Start a Study</a></li>
 								<li class=""><a href="#footer">Contact</a></li>
 							</ul>
 						</div>
@@ -74,9 +74,10 @@
 				
 				<div class="container">
 					<div class="row">
-						<div class="col-sm-8 col-sm-offset-2 text-center">
-							<h1 class="text-white">Signup is Currently Invite-Only</h1>
-							<span class="text-white space-bottom-medium">Unfortunately, signing up to use TestDesk at The University of Texas at Dallas is currently invite-only.<br> If you've been invited, check your email for a link to sign up. If not, enter your UTD NetID below to request an invite. In the mean time, learn a bit more about <a href="#learn_more">what TestDesk can do for you.</a><br/><br/></span>
+						<div class="col-sm-12 text-center">
+							<img alt="logo" class="logo" src="img/logo-light.png">
+							<h1 class="text-white">Less Logistics, More Results.</h1>
+							<span class="text-white space-bottom-medium">Spend less time coordinating and planning your research and more time researching with TestDesk.<br/>Looking for a participation opportunity? Check out <a href="#featured">our featured studies.</a><br/><br/></span>
 						</div>
 					</div><!--end of row-->
 
@@ -85,21 +86,102 @@
 							<div class="col-sm-12 text-center">
 								<div class="photo-form-wrapper clearfix">
 									<div class="row">
-										<div class="col-md-5 col-md-offset-2 col-sm-offset-2 col-sm-4">
-											<input class="form-email" type="text" placeholder="Request an invite with your UTD NetID">
-										</div>
-										
-										<div class="col-md-3 col-sm-4">
-											<a href="signup-requested.html"><input type="submit" class="btn btn-primary btn-filled" value="Request Invite"></a>
-										</div>
+										<form action="/wordpress/processlogin.php" method="post">
+											<div class="col-md-5 col-sm-4">
+												<input class="form-email" type="text" placeholder="Sign in with your UTD NetID" name="utdID">
+											</div>
+								
+											<div class="col-md-4 col-sm-4">
+												<input class="form-password" type="password" placeholder="Password" name="password">
+											</div>
+											
+											<div class="col-md-3 col-sm-4">
+												<input type="submit" class="btn btn-primary btn-filled" onclick="signIn()" value="Sign In">
+											</div>
+										</form>
 									</div><!--end of row-->
 						
 								</div><!--end of photo form wrapper-->
+								
+								<?php
+									if(isset($_GET['error']))
+									{
+										if($_GET['error'] == 'badusername')
+										{
+											?><span class="text-white">Username not found.</span><?php
+										}
+										else if($_GET['error'] == 'badpassword')
+										{
+											?><span class="text-white">Incorrect Password.</span><?php
+										}
+									}
+									else
+									{
+										?><span class="text-white"><i class="icon icon_lock"></i> Work comfortably from home. All research access is SSL Secured.</span><?php
+									}
+								?>
 							</div>
 						
 						</div><!--end of row-->
 				</div><!--end of container-->
 			</header>
+
+			<section class="text-banner bg-white" id="featured">
+				<div class="container text-center">
+					
+					<div class="row">
+						
+					<div class="col-sm-12">
+							<ul class="icons-large">
+								<li><i class="icon icon-piechart icon-large"></i></li>
+								<li><i class="icon icon-genius icon-large"></i></li>
+								<li><i class="icon icon-pencil icon-large"></i></li>
+							</ul>
+							<h1 class="center-block vis">Featured Studies at The University of Texas at Dallas<br></h1>
+						</div></div>
+				</div>
+			</section>
+			
+			<section class="no-pad clearfix">
+				
+				<?php
+					// Create connection
+					$con = mysqli_connect("localhost","root","","wordpress");
+
+					// Check connection
+					if (mysqli_connect_errno())
+					{
+						echo "Failed to connect to MySQL: " . mysqli_connect_error();
+					}
+
+					//Take User 1's first 3 studies
+					$result = mysqli_query($con, "SELECT * FROM Studies WHERE userID = 1");
+
+					for($count = 0; $count < 3; $count++)
+					{
+						$row = mysqli_fetch_array($result);
+						//echo $row["studyField"];
+						echo '<div class="col-md-4 col-sm-12 no-pad">
+						
+							<div class="feature-box">
+							
+								<div class="background-image-holder overlay">
+									<img class="background-image" alt="Background Image" src="img/box'.($count+1).'.jpg">
+								</div>
+								
+								<div class="inner">
+									<span class="alt-font text-white">'.$row["studyField"].'</span>
+									<h1 class="text-white">'.$row["studyName"].'</h1>
+									<p class="text-white">'.$row["studyDescription"].'</p>
+									<a href="#" class="btn btn-primary btn-white">Learn More</a>
+								</div>
+							</div>
+							
+						</div>';
+					}
+				?>
+
+			</section>
 
 			<section id="learn_more" class="feature-selector bg-white">
 				<div class="container">
@@ -180,7 +262,7 @@
 							
 								<div class="col-sm-12">
 									<p class="lead text-center">
-										You've heard what TestDesk can do, now see it for yourself. TestDesk is changing the way researchers work worldwide, and now we've partnered with The University of Texas at Dallas to provide TestDesk to all UT Dallas approved researchers free of charge.<br/><a href="#">Start a study</a> to get started and see how TestDesk changes your workflow for the better.
+										You've heard what TestDesk can do, now see it for yourself. TestDesk is changing the way researchers work worldwide, and now we've partnered with The University of Texas at Dallas to provide TestDesk to all UT Dallas approved researchers free of charge.<br/><a href="signin.php">Start a study</a> to get started and see how TestDesk changes your workflow for the better.
 									</p>	
 								</div>
 							</div><!--end of row-->
@@ -190,6 +272,40 @@
 					</ul>
 				</div>
 			</section>
+
+			<section class="strip bg-secondary-1">
+				<div class="container">
+					<div class="row clearfix">
+						<div class="col-sm-6 col-xs-12 pull-left">
+							<h3 class="text-white"><strong>Change the way you research.</strong> Join the research revolution.</h3>
+						</div>
+						
+						<div class="col-sm-4 col-xs-12 pull-right text-right">
+							<a href="signup.php" class="btn btn-primary btn-white">Signup</a>
+						</div>
+					</div>
+				</div>
+			</section>
+			
+			<section class="clients-2 bg-white">
+				<div class="container">
+					<div class="row">
+						
+						<div class="col-md-2 col-md-offset-3 col-sm-4">
+							<a href="http://utdallas.edu"><img alt="Client Logo" src="img/client01.png"></a>
+						</div>
+						
+						<div class="col-md-2 col-sm-4">
+							<a href="http://ecs.utdallas.edu"><img alt="Client Logo" src="img/client02.2.png"></a>
+						</div>
+						
+						<div class="col-md-2 col-sm-4">
+							<a href="http://qualtrics.com"><img alt="Client Logo" src="img/client03.png"></a>
+						</div>
+					</div><!--end of row-->
+				</div><!--end of container-->
+			</section>
+		</div>
 		
 		<div id="footer" class="footer-container">
 		

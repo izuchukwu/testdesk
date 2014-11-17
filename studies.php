@@ -22,7 +22,18 @@
         <script src="js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     </head>
     <body>
-				
+		<?php
+			// Create connection
+			$con = mysqli_connect("localhost","root","","wordpress");
+
+			// Check connection
+			if (mysqli_connect_errno())
+			{
+			  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+			}
+
+			$result = mysqli_query($con, "SELECT * FROM Studies");
+		?>
 		<div class="nav-container">
 			<nav class="top-bar overlay-bar">
 				<div class="container">
@@ -34,7 +45,7 @@
 							
 								<div class="pull-right">
 									<a href="#learn_more" class="btn btn-primary btn-white btn-xs">Learn More</a>
-									<a href="signup.html" class="btn btn-primary btn-filled btn-xs">Signup</a>
+									<a href="signup.php" class="btn btn-primary btn-filled btn-xs">Signup</a>
 								</div>
 							</div>
 						</div>
@@ -43,7 +54,7 @@
 				
 					<div class="row nav-menu text-right">
 						<div class="col-sm-3 col-md-2 columns">
-							<a href="index.html">
+							<a href="index.php">
 								<img class="logo logo-light" alt="Logo" src="img/logo-light.png">
 								<img class="logo logo-dark" alt="Logo" src="img/logo-dark.png">
 							</a>
@@ -52,7 +63,7 @@
 						<div class="col-sm-9 col-md-10 columns">
 							<ul class="menu">
 								<li class=""><a href="#">Open Studies</a></li>
-								<li class=""><a href="signin.html">Start a Study</a></li>
+								<li class=""><a href="signin.php">Start a Study</a></li>
 								<li class=""><a href="#footer">Contact</a></li>
 							</ul>
 						</div>
@@ -93,7 +104,7 @@
 											<a href="#studies"><input type="submit" class="btn btn-primary btn-filled" value="Find a Study"></a>
 										</div>
 										<div class="col-md-3 col-sm-4">
-											<a href="signin.html"><input type="submit" class="btn btn-primary btn-filled" value="Start a Study"></a>
+											<a href="signin.php"><input type="submit" class="btn btn-primary btn-filled" value="Start a Study"></a>
 										</div>
 									</div><!--end of row-->
 						
@@ -122,7 +133,7 @@
 								<li data-filter=".atec">Arts &amp; Technology</li>
 								<li data-filter=".eng">Engineering</li>
 								<li data-filter=".psych">Psychology</li>
-								<li data-filter=".admin">University Administration</li>
+								<!--li data-filter=".admin">University Administration</li-->
 							</ul>
 						</div>
 					</div><!--end of row-->
@@ -131,120 +142,41 @@
 				<div class="container">
 					<div class="row">
 						<div class="blog-masonry-container">
-						
-							<div class="col-md-4 col-sm-6 blog-masonry-item atec">
-								<div class="item-inner">
-									<a href="#">
-										<img alt="Study" src="img/blog-masonry-1.jpg">
-									</a>
-									<div class="post-title">
-										<span class="sub alt-font">Arts &amp; Technology</span><br>
-										<a href="#"><h2>User Experience Paradigm Study</h2></a>
-										<p>
-											A call for participation for a research study investigating the effectiveness of a potential new user experience paradigm for mobile devices.
-										</p>
-										<div class="post-meta">
-											<span class="sub alt-font">Open</span>
+							
+							<?php
+								while($row = mysqli_fetch_array($result))
+								{
+									$type = '<div class="col-md-4 col-sm-6 blog-masonry-item ';
+									if($row['studyField'] == 'ARTS & TECHNOLOGY')
+										$type = $type.'atec ';
+									if($row['studyField'] == 'BIOMEDICAL ENGINEERING')
+										$type = $type.'eng ';
+									if($row['studyField'] == 'PSYCHOLOGY')
+										$type = $type.'psych ';
+									$type = $type.'">';
+									$learnMoreLink = '<a href="/wordpress/study?id='.$row['studyID'].'" class="link-text">Learn More</a>'
+									?>
+									<?php echo $type;?>
+										<div class="item-inner">
+											<a href="#">
+												<img alt="Study" src="img/blog-masonry-1.jpg">
+											</a>
+											<div class="post-title">
+												<span class="sub alt-font"><?php echo $row['studyField'];?></span><br>
+												<a href="#"><h2><?php echo $row['studyName'];?></h2></a>
+												<p>
+													<?php echo $row['studyDescription'];?>
+												</p>
+												<div class="post-meta">
+													<span class="sub alt-font">Open</span>
+												</div>
+												<?php echo $learnMoreLink;?>
+											</div>
 										</div>
-										<a href="#" class="link-text">Learn More</a>
 									</div>
-								</div>
-							</div><!--end of individual post-->
-
-							<div class="col-md-4 col-sm-6 blog-masonry-item eng">
-								<div class="item-inner">
-									<a href="#">
-										<img alt="Study" src="img/blog-masonry-2.jpg">
-									</a>
-									<div class="post-title">
-										<span class="sub alt-font">Biomedical Engineering</span><br>
-										<a href="#"><h2>Photosensitivity Relief Study</h2></a>
-										<p>
-											A call for participation for a research study investigating the effectiveness of a potential relief mechanism for people with photosensitivity-related conditions.
-										</p>
-										<div class="post-meta">
-											<span class="sub alt-font">Open</span>
-										</div>
-										<a href="#" class="link-text">Learn More</a>
-									</div>
-								</div>
-							</div><!--end of individual post-->
-
-							<div class="col-md-4 col-sm-6 blog-masonry-item psych">
-								<div class="item-inner">
-									<a href="#">
-										<img alt="Study" src="img/blog-masonry-3.jpg">
-									</a>
-									<div class="post-title">
-										<span class="sub alt-font">Psychology</span><br>
-										<a href="#"><h2>Music &amp; The Mind Study</h2></a>
-										<p>
-											A call for participation for a research study investigating the effects of different genres of music on the state of the mind.
-										</p>
-										<div class="post-meta">
-											<span class="sub alt-font">Open</span>
-										</div>
-										<a href="#" class="link-text">Learn More</a>
-									</div>
-								</div>
-							</div><!--end of individual post-->
-
-							<div class="col-md-4 col-sm-6 blog-masonry-item psych">
-								<div class="item-inner">
-									<a href="#">
-										<img alt="Study" src="img/blog-masonry-4.jpg">
-									</a>
-									<div class="post-title">
-										<span class="sub alt-font">Psychology</span><br>
-										<a href="#"><h2>Taste &amp; Perception Study</h2></a>
-										<p>
-											A call for participation for a research study investigating the effects of perception on taste, and the effects of taste on perception.
-										</p>
-										<div class="post-meta">
-											<span class="sub alt-font">Open</span>
-										</div>
-										<a href="#" class="link-text">Learn More</a>
-									</div>
-								</div>
-							</div><!--end of individual post-->
-
-							<div class="col-md-4 col-sm-6 blog-masonry-item admin">
-								<div class="item-inner">
-									<a href="#">
-										<img alt="Study" src="img/blog-masonry-3.jpg">
-									</a>
-									<div class="post-title">
-										<span class="sub alt-font">Psychology</span><br>
-										<a href="#"><h2>Student Transportation Study</h2></a>
-										<p>
-											A call for participation for a research study investigating the various methods of student transportation in different contexts.
-										</p>
-										<div class="post-meta">
-											<span class="sub alt-font">Open</span>
-										</div>
-										<a href="#" class="link-text">Learn More</a>
-									</div>
-								</div>
-							</div><!--end of individual post-->
-
-							<div class="col-md-4 col-sm-6 blog-masonry-item atec">
-								<div class="item-inner">
-									<a href="#">
-										<img alt="Study" src="img/blog-masonry-4.jpg">
-									</a>
-									<div class="post-title">
-										<span class="sub alt-font">Arts &amp; Technology</span><br>
-										<a href="#"><h2>Virtual Reality Adaptability Study</h2></a>
-										<p>
-											A call for participation for a research study investigating the adaptability of the human mind in a near-realistic virtual reality environment.
-										</p>
-										<div class="post-meta">
-											<span class="sub alt-font">Open</span>
-										</div>
-										<a href="#" class="link-text">Learn More</a>
-									</div>
-								</div>
-							</div><!--end of individual post-->
+									<?php
+								}
+							?>
 						
 						</div><!--end of blog masonry container-->
 					</div><!--end of row-->
@@ -288,7 +220,7 @@
 									</div>
 									<div class="title">
 										<a href="#">Get started, and change the way you researchf for th ebttter.</a>
-										<span class="sub">You've heard what TestDesk can do, now see it for yourself. TestDesk is changing the way researchers work worldwide, and now we've partnered with The University of Texas at Dallas to provide TestDesk to all UT Dallas approved researchers free of charge. Start a study to get started and see how TestDesk changes your workflow for the better. <a href="signin.html">Start a study</a></span>
+										<span class="sub">You've heard what TestDesk can do, now see it for yourself. TestDesk is changing the way researchers work worldwide, and now we've partnered with The University of Texas at Dallas to provide TestDesk to all UT Dallas approved researchers free of charge. Start a study to get started and see how TestDesk changes your workflow for the better. <a href="signin.php">Start a study</a></span>
 									</div>
 								</li>
 							</ul>	
@@ -315,10 +247,29 @@
 						</div>
 						
 						<div class="col-sm-4 col-xs-12 pull-right text-right">
-							<a href="signup.html" class="btn btn-primary btn-white">Sign Up</a>
+							<a href="signup.php" class="btn btn-primary btn-white">Sign Up</a>
 						</div>
 					</div>
 				</div>
+			</section>
+
+			<section class="clients-2 bg-white">
+				<div class="container">
+					<div class="row">
+						
+						<div class="col-md-2 col-md-offset-3 col-sm-4">
+							<a href="http://utdallas.edu"><img alt="Client Logo" src="img/client01.png"></a>
+						</div>
+						
+						<div class="col-md-2 col-sm-4">
+							<a href="http://ecs.utdallas.edu"><img alt="Client Logo" src="img/client02.2.png"></a>
+						</div>
+						
+						<div class="col-md-2 col-sm-4">
+							<a href="http://qualtrics.com"><img alt="Client Logo" src="img/client03.png"></a>
+						</div>
+					</div><!--end of row-->
+				</div><!--end of container-->
 			</section>
 		</div>
 		

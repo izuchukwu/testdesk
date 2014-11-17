@@ -7,7 +7,7 @@
     <head>
         <meta charset="utf-8">
         
-        <title>Request Received | TestDesk</title>
+        <title>Study Hiatus | TestDesk</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -40,7 +40,7 @@
 				
 					<div class="row nav-menu">
 						<div class="col-sm-3 col-md-2 columns">
-							<a href="index.html">
+							<a href="index.php">
 								<img class="logo logo-light" alt="Logo" src="img/logo-light.png">
 								<img class="logo logo-dark" alt="Logo" src="img/logo-dark.png">
 							</a>
@@ -59,8 +59,8 @@
 				<div class="container align-vertical">
 					<div class="row">
 						<div class="col-sm-12 text-center">
-							<h1><strong>Request Received</strong><br>Keep an eye on your email.<br>You'll receive a notice about your request status within the hour.</h1>
-							<a href="index.html" class="btn btn-primary btn-white">Return</a>
+							<h1><strong>Hiatus on New Studies</strong><br>Unfortunately, UT Dallas has currently instituted a hold on new studies.<br>For more information, please contact the research administrator for your department.</h1>
+							<a href="dashboard.php" class="btn btn-primary btn-white">Return</a>
 						</div>
 					</div><!--end of row-->
 				</div><!--end of container-->
