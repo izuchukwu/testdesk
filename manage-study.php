@@ -19,6 +19,41 @@
         <link href="css/theme-blues.css" rel="stylesheet" type="text/css" media="all"/>
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700%7CRaleway:700' rel='stylesheet' type='text/css'>
         <script src="js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+        <script type="text/javascript">
+		    function getUrlParameter(sParam)
+			{
+			    var sPageURL = window.location.search.substring(1);
+			    var sURLVariables = sPageURL.split('&');
+			    for (var i = 0; i < sURLVariables.length; i++) 
+			    {
+			        var sParameterName = sURLVariables[i].split('=');
+			        if (sParameterName[0] == sParam) 
+			        {
+			            return sParameterName[1];
+			        }
+			    }
+			}    
+        	function set_link ()
+        	{
+        		var linkToUpdate = $("#link").val();
+        		var encodedUrl = encodeURIComponent(linkToUpdate);
+        		$.ajax("updateLink.php?link="+linkToUpdate+"&id="+getUrlParameter('id'));
+        		$("#linkSet").fadeIn("slow");
+        		setTimeout(fade_out, 5000);
+        	}
+        	function fade_out ()
+        	{
+        		$("#linkSet").fadeOut("slow");
+        	}
+        	function remove_timeslot()
+        	{
+        		$("#timeslot1").fadeOut("slow");
+        	}
+        	function actually_remove_timeslot()
+        	{
+
+        	}
+        </script>
     </head>
     <body>	
 		<div class="nav-container">
@@ -31,7 +66,7 @@
 								<a href="http://utdallas.edu/"><span class="alt-font">The University of Texas at Dallas</span></a>
 							
 								<div class="pull-right">
-									<a href="signup.html" class="btn btn-primary btn-filled btn-xs" style="visibility:hidden;">Signup</a>
+									<a href="signup.php" class="btn btn-primary btn-filled btn-xs" style="visibility:hidden;">Signup</a>
 								</div>
 							</div>
 						</div>
@@ -40,7 +75,7 @@
 				
 					<div class="row nav-menu text-right">
 						<div class="col-sm-3 col-md-2 columns">
-							<a href="index.html">
+							<a href="index.php">
 								<img class="logo logo-light" alt="Logo" src="img/logo-light.png">
 								<img class="logo logo-dark" alt="Logo" src="img/logo-dark.png">
 							</a>
@@ -48,12 +83,16 @@
 					
 						<div class="col-sm-9 col-md-10 columns">
 							<ul class="menu">
-								<li class=""><a href="studies.html">Open Studies</a></li>
-								<li class=""><a href="dashboard.html">Dashboard</a></li>
+								<li class=""><a href="studies.php">Open Studies</a></li>
+								<li class="has-dropdown"><a href="dashboard.php">Dashboard</a>
+									<ul class="subnav">
+										<li><a href="#">Start a Study</a></li>
+									</ul>
+								</li>
 								<li class="has-dropdown"><a href="#">Account</a>
 									<ul class="subnav">
 										<li><a href="#">Account Settings</a></li>
-										<li><a href="index.html">Sign Out</a></li>
+										<li><a href="index.php">Sign Out</a></li>
 									</ul>
 								</li>
 							</ul>
@@ -76,7 +115,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-12">
-							<a href="dashboard.html"><span class="text-white alt-font">⬅︎ Active Studies</span></a><p></p>
+							<a href="dashboard.php"><span class="text-white alt-font">⬅︎ Active Studies</span></a><p></p>
 							<h1 class="text-white">Student Engagement Study</h1>
 							<p class="text-white lead">A study in the engagement of the student population<br>in campus activities and events. </p><br>
 						</div>
@@ -103,7 +142,7 @@
 						</div>
 					</div><!--end of row-->
 					<div class="row">
-								<div class="col-md-3 no-pad-left">
+								<div id="timeslot1" class="col-md-3 no-pad-left">
 									<div class="feature feature-icon-left">
 										<div class="icon-holder">
 											<i class="icon icon-clock"></i>
@@ -114,7 +153,7 @@
 												2 Groups Available<br>
 												1 Participant per Group<br>
 												1/2 Participants filled<br>
-												<a href="#">Remove Time Slot</a>
+												<a href="#time_slot" onclick="remove_timeslot()">Remove Time Slot</a>
 											</p>
 										</div>
 									</div>
@@ -135,7 +174,8 @@
 											</p>
 										</div>
 									</div>
-								</div><!--end of feature-->						
+								</div><!--end of feature-->
+
 								<div class="col-md-3 no-pad-left">
 									<div class="feature feature-icon-left">
 										<div class="icon-holder">
@@ -152,11 +192,12 @@
 										</div>
 									</div>
 								</div><!--end of feature-->
+
 							</div><!--end of row-->
-							<div class="col-md-6 col-sm-4">
+							<div class="col-md-9 col-sm-9">
 								<p>
-									Creating time slots enable you to provide opportunities for people to participate.<br>
-									Time slots are divided into groups based on how long each experiment session takes.<br>
+									Creating time slots enable you to provide opportunities for people to participate.
+									Time slots are divided into groups based on how long each experiment session takes.
 									Opportunities to participate are made available based on how many people you select to be in a single session.
 								</p><br>
 								<input type="submit" class="btn btn-primary btn-filled" value="Add Time Slot">
@@ -175,13 +216,13 @@
 					</div><!--end of row-->
 		
 					<div class="row">
-						<div class="col-md-2 col-sm-6">
+						<div class="col-md-2 col-sm-3">
 							<div class="feature feature-icon-large">
 								<i class="icon icon-notebook"></i>
 							</div>
 						</div><!--end 3 col-->
 					
-						<div class="col-md-6 col-sm-6">
+						<div class="col-md-6 col-sm-9">
 							<div class="feature  feature-icon-large">
 								<h5>Edit Questionnaire Link</h5>
 								<p>
@@ -191,11 +232,15 @@
 							</div>
 
 							<div class="photo-form-wrapper-embed clearfix">
-								<input class="form-email" type="text" placeholder="Questionnaire Link">
+								<input id="link" class="form-email" type="text" placeholder="Questionnaire Link">
 							</div>
 							
 							<div >
-								<input type="submit" class="btn btn-primary btn-filled" value="Set Link">
+								<input type="submit" class="btn btn-primary btn-filled" onclick="set_link()" value="Set Link">
+							</div>
+
+							<div >
+								<br><h4 id="linkSet" style="color:#6bb434;display:none">Link Updated</h4>
 							</div>
 							<br>
 						</div><!--end 3 col-->
@@ -383,7 +428,7 @@
 									Permanently delete your study. Think twice. Please note that this cannot be undone.<br>Upon clicking the button below, an email confirmation for deletion will be emailed to you. Follow the link to complete the deletion.
 								</p><br>
 							<div >
-								<a href="signup-requested.html"><input type="submit" class="btn btn-primary btn-filled" style="background-color:#ff0000; border-color:#ff0000" value="Delete Study"></a>
+								<a href="signup-requested.php"><input type="submit" class="btn btn-primary btn-filled" style="background-color:#ff0000; border-color:#ff0000" value="Delete Study"></a>
 							</div>
 						</div></div>
 				</div>

@@ -17,7 +17,7 @@
 			if($_POST['password'] == $row['password'])
 			{
 				setcookie('loggedinID',$_POST['utdID'],false);
-				header('location:http://127.0.0.1:4001/wordpress/studies.php');
+				header('location:http://127.0.0.1:4001/wordpress/dashboard.php');
 			}
 			else
 			{

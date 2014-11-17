@@ -60,13 +60,41 @@
 							</a>
 						</div>
 					
-						<div class="col-sm-9 col-md-10 columns">
-							<ul class="menu">
-								<li class=""><a href="#">Open Studies</a></li>
-								<li class=""><a href="signin.php">Start a Study</a></li>
-								<li class=""><a href="#footer">Contact</a></li>
-							</ul>
-						</div>
+						<?php
+							if(empty($_COOKIE['loggedinID']))
+							{
+								?>
+								<div class="col-sm-9 col-md-10 columns">
+									<ul class="menu">
+										<li class=""><a href="studies.php">Open Studies</a></li>
+										<li class=""><a href="signin.php">Start a Study</a></li>
+										<li class=""><a href="#footer">Contact</a></li>
+									</ul>
+								</div>
+								<?php
+							}
+							else
+							{
+								?>
+								<div class="col-sm-9 col-md-10 columns">
+									<ul class="menu">
+										<li class=""><a href="studies.php">Open Studies</a></li>
+										<li class="has-dropdown"><a href="dashboard.php">Dashboard</a>
+											<ul class="subnav">
+												<li><a href="new-study-hiatus.php">Start a Study</a></li>
+											</ul>
+										</li>
+										<li class="has-dropdown"><a href="#">Account</a>
+											<ul class="subnav">
+												<li><a href="#">Account Settings</a></li>
+												<li><a href="signout.php">Sign Out</a></li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+								<?php
+							}
+						?>
 					</div><!--end of row-->
 					
 					<div class="mobile-toggle">

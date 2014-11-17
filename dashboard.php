@@ -7,7 +7,6 @@
 <html class="no-js"> <!--<![endif]-->
     <head>
         <meta charset="utf-8">
-        
         <title>Dashboard | TestDesk</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -63,18 +62,41 @@
 							</a>
 						</div>
 					
-						<div class="col-sm-9 col-md-10 columns">
-							<ul class="menu">
-								<li class=""><a href="studies.php">Open Studies</a></li>
-								<li class=""><a href="#">Dashboard</a></li>
-								<li class="has-dropdown"><a href="#">Account</a>
-									<ul class="subnav">
-										<li><a href="#">Account Settings</a></li>
-										<li><a href="signout.php">Sign Out</a></li>
+						<?php
+							if(empty($_COOKIE['loggedinID']))
+							{
+								?>
+								<div class="col-sm-9 col-md-10 columns">
+									<ul class="menu">
+										<li class=""><a href="studies.php">Open Studies</a></li>
+										<li class=""><a href="signin.php">Start a Study</a></li>
+										<li class=""><a href="#footer">Contact</a></li>
 									</ul>
-								</li>
-							</ul>
-						</div>
+								</div>
+								<?php
+							}
+							else
+							{
+								?>
+								<div class="col-sm-9 col-md-10 columns">
+									<ul class="menu">
+										<li class=""><a href="studies.php">Open Studies</a></li>
+										<li class="has-dropdown"><a href="dashboard.php">Dashboard</a>
+											<ul class="subnav">
+												<li><a href="new-study-hiatus.php">Start a Study</a></li>
+											</ul>
+										</li>
+										<li class="has-dropdown"><a href="#">Account</a>
+											<ul class="subnav">
+												<li><a href="#">Account Settings</a></li>
+												<li><a href="signout.php">Sign Out</a></li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+								<?php
+							}
+						?>
 					</div><!--end of row-->
 					
 					<div class="mobile-toggle">
@@ -137,7 +159,7 @@
 													<span class="sub alt-font">4 Participants</span>
 												</div>
 												<div class="row">
-													<a href="#" class="link-text">View/Edit Study</a>
+													<a href="/wordpress/manage-study.php?id=<?php echo $row['studyID'];?>" class="link-text">View/Edit Study</a>
 												</div>
 											</div>
 										</div>
