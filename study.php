@@ -16,9 +16,37 @@
         <link href="css/elegant-icons.min.css" rel="stylesheet" type="text/css" media="all"/>
         <link href="css/lightbox.min.css" rel="stylesheet" type="text/css" media="all"/>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all"/>
-        <link href="css/theme.css" rel="stylesheet" type="text/css" media="all"/>
+        <link href="css/theme-blues.css" rel="stylesheet" type="text/css" media="all"/>
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700%7CRaleway:700' rel='stylesheet' type='text/css'>
         <script src="js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+        <script src="js/jquery-1.11.1.min.js" type="text/javascript"></script>
+        <script type="text/javascript">
+        	function getUrlParameter(sParam)
+			{
+			    var sPageURL = window.location.search.substring(1);
+			    var sURLVariables = sPageURL.split('&');
+			    for (var i = 0; i < sURLVariables.length; i++) 
+			    {
+			        var sParameterName = sURLVariables[i].split('=');
+			        if (sParameterName[0] == sParam) 
+			        {
+			            return sParameterName[1];
+			        }
+			    }
+			}    
+        	$(function()
+			{
+				if(getUrlParameter('success') == 'true')
+				{
+					document.getElementById("signedup").innerHTML = "Successfully Signed Up";
+					setTimeout(fade_update, 5000);
+				}
+			});
+			function fade_update()
+			{
+				$("#signedup").fadeOut("slow");
+			}
+        </script>
     </head>
     <body>
     	<?php
@@ -36,11 +64,12 @@
 
 			$result = mysqli_query($con, "SELECT * FROM Users WHERE userID = ".$study['userID']);
 			$user = mysqli_fetch_array($result);
+
+			$timeSlots = mysqli_query($con, "SELECT * FROM ParticipationOpportunities WHERE studyID = ".$_GET['id']." ORDER BY date, startTime");
     	?>
 		<div class="nav-container">
 			<nav class="top-bar overlay-bar">
 				<div class="container">
-				
 					<div class="row utility-menu">
 						<div class="col-sm-12">
 							<div class="utility-inner clearfix">
@@ -109,12 +138,12 @@
 			
 		</div>
 		<div class="main-container">
-			<header class="title">
+			<header class="title" style="height: 365px">
 					<div class="background-image-holder parallax-background">
 						<img class="background-image" alt="Background Image" src="img/hero10.jpg">
 					</div>
 					
-					<div class="container align-bottom">
+					<div class="container align-bottom" style="padding-top: 200px !important">
 						<div class="row">
 							<div class="col-xs-12">
 								<h1 class="text-white"><?php echo $study['studyName'];?></h1>
@@ -126,6 +155,11 @@
 			
 			<section class="article-single">
 				<div class="container">
+					<div class="row">
+						<div class="col-md-12">
+							<h1>Details</h1>
+						</div>
+					</div><!--end of row-->
 					<div class="row">
 						<div class="col-sm-4 col-md-3">
 							<div class="author-details no-pad-top">
@@ -162,17 +196,79 @@
 									Participation is voluntary and compensation will be in the form of one (1) $25 Amazon Gift Card. Due to the form of the mobile devices, participants cannot wear glasses during the study. If you wear glasses, don’t, wear contacts.
 								</p>
 								<p>
-									If interested, <strong><a href="http://utdallas.edu">click here</a></strong> to sign up for a time slot.
+									If interested, <strong><a href="/wordpress/study.php?id=<?php echo $study['studyID'];?>#time_slots">click here</a></strong> to sign up for a time slot.
 								</p>
 							</div><!--end of article body-->
 						</div>
 					</div><!--end of row-->
 				</div><!--end of container-->	
 			</section>
+
+			<section class="" id="time_slots">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-3 col-sm-5">
+							<h1>Open Time Slots</h1>
+						</div>
+						<div class="col-md-9 col-sm-7">
+							<h1 id="signedup" style="color:#6bb434;"></h1>
+						</div>
+					</div><!--end of row-->
+					<form action="/wordpress/processparticipate.php?id=<?php echo $_GET['id'];?>" method="post">
+						<div class="photo-form-wrapper-embed clearfix" class="clearfix">
+								<div class="col-md-4 col-sm-4">
+									<input class="form-email" type="text" placeholder="First Name" name="firstName" required>
+								</div>
+					
+								<div class="col-md-4 col-sm-4">
+									<input class="form-password" type="text" placeholder="Last Name" name="lastName" required>
+								</div>
+
+								<div class="col-md-4 col-sm-4">
+									<input class="form-password" type="text" placeholder="Net ID" name="netID" required>
+								</div>
+						</div>
+
+						<?php
+							while($slot = mysqli_fetch_array($timeSlots))
+							{
+								$participants = mysqli_query($con, "SELECT * FROM Participants WHERE participationOpportunityID = ".$slot['participationOpportunityID']);
+								$signedUp = 0;
+								while($check = mysqli_fetch_array($participants))
+									$signedUp++;
+								if($signedUp < $slot['participantMax'])
+								{
+									?>
+									<div id="timeslot<?php echo $slot['participationOpportunityID'];?>" class="col-md-3 no-pad-left">
+										<div class="feature feature-icon-left">
+											<div class="icon-holder">
+												<i class="icon icon-clock"></i>
+											</div>
+											<div class="feature-text">
+												<h6><?php echo $slot['startTime']." - ".$slot['endTime'];?>, 
+													<?php
+														$date = new DateTime($slot['date']);
+														echo $date->format('D M. j'); //Tues Dec. 2
+													?></h6>
+												<p>
+													<?php echo $signedUp;?>/<?php echo $slot['participantMax'];?> Participants filled<br>
+													<button type="submit" class="btn btn-primary btn-filled" name="timeSlotID" value="<?php echo $slot['participationOpportunityID']?>">Sign Up</button>
+												</p>
+											</div>
+										</div>
+									</div><!--end of feature-->
+									<?php
+								}
+							}
+						?>
+					</form>
+				</div><!--end of container-->	
+			</section>
 		</div>
+
 		<div id="footer" class="footer-container">
 		
-			<footer class="details bg-white">
+			<footer class="details bg-grey">
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-4">

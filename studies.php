@@ -42,11 +42,26 @@
 						<div class="col-sm-12">
 							<div class="utility-inner clearfix">
 								<a href="http://utdallas.edu/"><span class="alt-font">The University of Texas at Dallas</span></a>
-							
-								<div class="pull-right">
-									<a href="#learn_more" class="btn btn-primary btn-white btn-xs">Learn More</a>
-									<a href="signup.php" class="btn btn-primary btn-filled btn-xs">Signup</a>
-								</div>
+								<?php
+									if(empty($_COOKIE['loggedinID']))
+									{
+										?>
+										<div class="pull-right">
+											<a href="#learn_more" class="btn btn-primary btn-white btn-xs">Learn More</a>
+											<a href="signup.php" class="btn btn-primary btn-filled btn-xs">Signup</a>
+										</div>
+										<?php
+									}
+									else
+									{
+										?>
+										<div class="pull-right">
+											<a href="#learn_more" class="btn btn-primary btn-white btn-xs" style="visibility:hidden">Learn More</a>
+											<a href="signup.php" class="btn btn-primary btn-filled btn-xs" style="visibility:hidden">Signup</a>
+										</div>
+										<?php
+									}
+								?>
 							</div>
 						</div>
 					</div><!--end of row-->
@@ -128,10 +143,10 @@
 							<div class="col-sm-12 text-center">
 								<div class="photo-form-wrapper clearfix">
 									<div class="row">
-										<div class="col-md-3 col-md-offset-3 col-sm-4">
+										<div class="col-md-3 col-md-offset-3 col-sm-3 col-sm-offset-3">
 											<a href="#studies"><input type="submit" class="btn btn-primary btn-filled" value="Find a Study"></a>
 										</div>
-										<div class="col-md-3 col-sm-4">
+										<div class="col-md-3 col-sm-3">
 											<a href="signin.php"><input type="submit" class="btn btn-primary btn-filled" value="Start a Study"></a>
 										</div>
 									</div><!--end of row-->
@@ -182,16 +197,16 @@
 									if($row['studyField'] == 'PSYCHOLOGY')
 										$type = $type.'psych ';
 									$type = $type.'">';
-									$learnMoreLink = '<a href="/wordpress/study?id='.$row['studyID'].'" class="link-text">Learn More</a>'
+									$learnMoreLink = '<a href="/wordpress/study.php?id='.$row['studyID'].'" class="link-text">Learn More</a>'
 									?>
 									<?php echo $type;?>
 										<div class="item-inner">
-											<a href="/wordpress/study?id=<?php echo $row['studyID'];?>">
+											<a href="/wordpress/study.php?id=<?php echo $row['studyID'];?>">
 												<img alt="Study" src="img/blog-masonry-<?php echo intval($row['studyID'])%4+1;?>.jpg">
 											</a>
 											<div class="post-title">
 												<span class="sub alt-font"><?php echo $row['studyField'];?></span><br>
-												<a href="/wordpress/study?id=<?php echo $row['studyID'];?>"><h2><?php echo $row['studyName'];?></h2></a>
+												<a href="/wordpress/study.php?id=<?php echo $row['studyID'];?>"><h2><?php echo $row['studyName'];?></h2></a>
 												<p>
 													<?php echo $row['studyDescription'];?>
 												</p>

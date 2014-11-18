@@ -33,6 +33,7 @@
         <link href="bootstrap-datepicker/bootstrap-datepicker.css" rel="stylesheet" type="text/css" media="all"/>
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700%7CRaleway:700' rel='stylesheet' type='text/css'>
         
+        <script src="jquery/external/jquery/jquery.js"></script>
         <script src="js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
         <script src="jquery/jquery-ui.min.js"></script>
         <script src="bootstrap-datepicker/bootstrap-datepicker.js"></script>
@@ -316,6 +317,7 @@
         <script src="js/lightbox.min.js"></script>
         <script src="js/jquery.countdown.min.js"></script>
         <script src="js/scripts.js"></script>
+        <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
     </body>
 </html>
 				

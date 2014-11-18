@@ -32,10 +32,26 @@
 							<div class="utility-inner clearfix">
 								<a href="http://utdallas.edu/"><span class="alt-font">The University of Texas at Dallas</span></a>
 							
-								<div class="pull-right">
-									<a href="#learn_more" class="btn btn-primary btn-white btn-xs">Learn More</a>
-									<a href="signup.php" class="btn btn-primary btn-filled btn-xs">Signup</a>
-								</div>
+								<?php
+									if(empty($_COOKIE['loggedinID']))
+									{
+										?>
+										<div class="pull-right">
+											<a href="#learn_more" class="btn btn-primary btn-white btn-xs">Learn More</a>
+											<a href="signup.php" class="btn btn-primary btn-filled btn-xs">Signup</a>
+										</div>
+										<?php
+									}
+									else
+									{
+										?>
+										<div class="pull-right">
+											<a href="#learn_more" class="btn btn-primary btn-white btn-xs" style="visibility:hidden">Learn More</a>
+											<a href="signup.php" class="btn btn-primary btn-filled btn-xs" style="visibility:hidden">Signup</a>
+										</div>
+										<?php
+									}
+								?>
 							</div>
 						</div>
 					</div><!--end of row-->

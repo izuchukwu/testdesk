@@ -56,7 +56,7 @@
 				if(getUrlParameter('num') != null)
 				{
 					document.getElementById("added").innerHTML = getUrlParameter('num')+" New Time Slots Created";
-					setTimeout(fade_update, 10000);
+					setTimeout(fade_update, 5000);
 				}
 			});
 			function fade_update()
@@ -108,22 +108,41 @@
 							</a>
 						</div>
 					
-						<div class="col-sm-9 col-md-10 columns">
-							<ul class="menu">
-								<li class=""><a href="studies.php">Open Studies</a></li>
-								<li class="has-dropdown"><a href="dashboard.php">Dashboard</a>
-									<ul class="subnav">
-										<li><a href="#">Start a Study</a></li>
+						<?php
+							if(empty($_COOKIE['loggedinID']))
+							{
+								?>
+								<div class="col-sm-9 col-md-10 columns">
+									<ul class="menu">
+										<li class=""><a href="studies.php">Open Studies</a></li>
+										<li class=""><a href="signin.php">Start a Study</a></li>
+										<li class=""><a href="#footer">Contact</a></li>
 									</ul>
-								</li>
-								<li class="has-dropdown"><a href="#">Account</a>
-									<ul class="subnav">
-										<li><a href="#">Account Settings</a></li>
-										<li><a href="index.php">Sign Out</a></li>
+								</div>
+								<?php
+							}
+							else
+							{
+								?>
+								<div class="col-sm-9 col-md-10 columns">
+									<ul class="menu">
+										<li class=""><a href="studies.php">Open Studies</a></li>
+										<li class="has-dropdown"><a href="dashboard.php">Dashboard</a>
+											<ul class="subnav">
+												<li><a href="new-study-hiatus.php">Start a Study</a></li>
+											</ul>
+										</li>
+										<li class="has-dropdown"><a href="#">Account</a>
+											<ul class="subnav">
+												<li><a href="#">Account Settings</a></li>
+												<li><a href="signout.php">Sign Out</a></li>
+											</ul>
+										</li>
 									</ul>
-								</li>
-							</ul>
-						</div>
+								</div>
+								<?php
+							}
+						?>
 					</div><!--end of row-->
 					
 					<div class="mobile-toggle">
@@ -164,10 +183,10 @@
 			<section class="duplicatable-content" id="time_slots">
 				<div class="container">
 					<div class="row">
-						<div class="col-md-3 col-sm-3">
+						<div class="col-md-2 col-sm-3">
 							<h1>Time Slots</h1>
 						</div>
-						<div class="col-md-9 col-sm-9">
+						<div class="col-md-10 col-sm-9">
 							<h1 id="added" style="color:#6bb434;"></h1>
 						</div>
 					</div><!--end of row-->
@@ -176,7 +195,11 @@
 						<?php
 							while($slot = mysqli_fetch_array($timeSlots))
 							{
-								?>
+								$participants = mysqli_query($con, "SELECT * FROM Participants WHERE participationOpportunityID = ".$slot['participationOpportunityID']);
+								$signedUp = 0;
+								while($check = mysqli_fetch_array($participants))
+									$signedUp++;
+									?>
 								<div id="timeslot<?php echo $slot['participationOpportunityID'];?>" class="col-md-3 no-pad-left">
 									<div class="feature feature-icon-left">
 										<div class="icon-holder">
@@ -189,7 +212,7 @@
 													echo $date->format('D M. j'); //Tues Dec. 2
 												?></h6>
 											<p>
-												<?php echo $slot['participantNum'];?>/<?php echo $slot['participantMax'];?> Participants filled<br>
+												<?php echo $signedUp;?>/<?php echo $slot['participantMax'];?> Participants filled<br>
 												<a href="#time_slot" onclick="remove_timeslot(<?php echo $slot[participationOpportunityID];?>)">Remove Time Slot</a>
 											</p>
 										</div>
@@ -214,7 +237,6 @@
 			</section>
 			
 			<section class="duplicatable-content" id="questionnaire">
-			
 				<div class="container">
 					<div class="row">
 						<div class="col-md-12">
@@ -283,157 +305,150 @@
 
 					<div class="row">
 						<div class="col-md-1 no-pad-left">
-									<div class="">
-										<div class="feature-text">
-											<h6>ID</h6>
-										</div>
-									</div>
-								</div><!--end of feature-->
-								<div class="col-md-3 no-pad-left">
-									<div class="">
-										<div class="feature-text">
-											<h6>Name</h6>
-										</div>
-									</div>
-								</div><!--end of feature-->
-						
-								<div class="col-md-2 no-pad-left">
-									<div class="feature feature-icon-left">
-										<div class="feature-text">
-											<h6>NetID</h6>
-										</div>
-									</div>
-								</div><!--end of feature-->						
-								<div class="col-md-2 no-pad-left">
-									<div class="feature feature-icon-left">
-										<div class="feature-text">
-											<h6>Year</h6>
-										</div>
-									</div>
-								</div><!--end of feature-->
-								<div class="col-md-2 no-pad-left">
-									<div class="feature feature-icon-left">
-										<div class="feature-text">
-											<h6>Approval</h6>
-										</div>
-									</div>
-								</div><!--end of feature-->
-								<div class="col-md-2 no-pad-left">
-									<div class="feature feature-icon-left">
-										<div class="feature-text">
-											<h6>Actions</h6>
-										</div>
-									</div>
-								</div><!--end of feature-->
-							</div><!--end of row-->
+							<div class="">
+								<div class="feature-text">
+									<h6>ID</h6>
+								</div>
+							</div>
+						</div><!--end of feature-->
+						<div class="col-md-3 no-pad-left">
+							<div class="">
+								<div class="feature-text">
+									<h6>Name</h6>
+								</div>
+							</div>
+						</div><!--end of feature-->
+				
+						<div class="col-md-2 no-pad-left">
+							<div class="feature feature-icon-left">
+								<div class="feature-text">
+									<h6>NetID</h6>
+								</div>
+							</div>
+						</div><!--end of feature-->						
+						<div class="col-md-2 no-pad-left">
+							<div class="feature feature-icon-left">
+								<div class="feature-text">
+									<h6>Status</h6>
+								</div>
+							</div>
+						</div><!--end of feature-->
+						<div class="col-md-2 no-pad-left">
+							<div class="feature feature-icon-left">
+								<div class="feature-text">
+									<h6>Actions</h6>
+								</div>
+							</div>
+						</div><!--end of feature-->
+					</div><!--end of row-->
 
 
-							<div class="row">
+					<div class="row">
 						<div class="col-md-1 no-pad-left">
-									<div class="">
-										<div class="feature-text">
-											<p>001</p>
-										</div>
-									</div>
-								</div><!--end of feature-->
-								<div class="col-md-3 no-pad-left">
-									<div class="">
-										<div class="feature-text">
-											<p>Cody Farris</p>
-										</div>
-									</div>
-								</div><!--end of feature-->
-						
-								<div class="col-md-2 no-pad-left">
-									<div class="feature feature-icon-left">
-										<div class="feature-text">
-											<p>cxf111000</p>
-										</div>
-									</div>
-								</div><!--end of feature-->						
-								<div class="col-md-2 no-pad-left">
-									<div class="feature feature-icon-left">
-										<div class="feature-text">
-											<p>Junior I think</p>
-										</div>
-									</div>
-								</div><!--end of feature-->
-								<div class="col-md-2 no-pad-left">
-									<div class="feature feature-icon-left">
-										<div class="feature-text">
-											<p>Pending</p>
-										</div>
-									</div>
-								</div><!--end of feature-->
-								<div class="col-md-1 no-pad-left">
-									<div class="feature feature-icon-left">
-										<div class="feature-text">
-											<p><a href="#">Contact</a></p>
-										</div>
-									</div>
-								</div><!--end of feature-->
-								<div class="col-md-1 no-pad-left">
-									<div class="feature feature-icon-left">
-										<div class="feature-text">
-											<p><a href="#">Remove</a></p>
-										</div>
-									</div>
-								</div><!--end of feature-->
-							</div><!--end of row-->
-
-
-							<div class="row">
+							<div class="">
+								<div class="feature-text">
+									<p>001</p>
+								</div>
+							</div>
+						</div><!--end of feature-->
+						<div class="col-md-3 no-pad-left">
+							<div class="">
+								<div class="feature-text">
+									<p>Cody Farris</p>
+								</div>
+							</div>
+						</div><!--end of feature-->
+				
+						<div class="col-md-2 no-pad-left">
+							<div class="feature feature-icon-left">
+								<div class="feature-text">
+									<p>cxf111000</p>
+								</div>
+							</div>
+						</div><!--end of feature-->						
+						<div class="col-md-2 no-pad-left">
+							<div class="feature feature-icon-left">
+								<div class="feature-text">
+									<p>Survey Complete</p>
+								</div>
+							</div>
+						</div><!--end of feature-->
 						<div class="col-md-1 no-pad-left">
-									<div class="">
-										<div class="feature-text">
-											<p>002</p>
-										</div>
-									</div>
-								</div><!--end of feature-->
-								<div class="col-md-3 no-pad-left">
-									<div class="">
-										<div class="feature-text">
-											<p>Clay Howell</p>
-										</div>
-									</div>
-								</div><!--end of feature-->
-						
-								<div class="col-md-2 no-pad-left">
-									<div class="feature feature-icon-left">
-										<div class="feature-text">
-											<p>cxh210310</p>
-										</div>
-									</div>
-								</div><!--end of feature-->						
-								<div class="col-md-2 no-pad-left">
-									<div class="feature feature-icon-left">
-										<div class="feature-text">
-											<p>hs sophomore</p>
-										</div>
-									</div>
-								</div><!--end of feature-->
-								<div class="col-md-2 no-pad-left">
-									<div class="feature feature-icon-left">
-										<div class="feature-text">
-											<p>nope</p>
-										</div>
-									</div>
-								</div><!--end of feature-->
-								<div class="col-md-1 no-pad-left">
-									<div class="feature feature-icon-left">
-										<div class="feature-text">
-											<p><a href="#">Contact</a></p>
-										</div>
-									</div>
-								</div><!--end of feature-->
-								<div class="col-md-1 no-pad-left">
-									<div class="feature feature-icon-left">
-										<div class="feature-text">
-											<p><a href="#">Remove</a></p>
-										</div>
-									</div>
-								</div><!--end of feature-->
-							</div><!--end of row-->
+							<div class="feature feature-icon-left">
+								<div class="feature-text">
+									<p><a href="#">Approve</a></p>
+								</div>
+							</div>
+						</div><!--end of feature-->
+						<div class="col-md-1 no-pad-left">
+							<div class="feature feature-icon-left">
+								<div class="feature-text">
+									<p><a href="#">Reject</a></p>
+								</div>
+							</div>
+						</div><!--end of feature-->
+						<div class="col-md-1 no-pad-left">
+							<div class="feature feature-icon-left">
+								<div class="feature-text">
+									<p><a href="#">Contact</a></p>
+								</div>
+							</div>
+						</div><!--end of feature-->
+					</div><!--end of row-->
+
+
+					<div class="row">
+						<div class="col-md-1 no-pad-left">
+							<div class="">
+								<div class="feature-text">
+									<p>002</p>
+								</div>
+							</div>
+						</div><!--end of feature-->
+						<div class="col-md-3 no-pad-left">
+							<div class="">
+								<div class="feature-text">
+									<p>Clay Howell</p>
+								</div>
+							</div>
+						</div><!--end of feature-->
+				
+						<div class="col-md-2 no-pad-left">
+							<div class="feature feature-icon-left">
+								<div class="feature-text">
+									<p>cxh210310</p>
+								</div>
+							</div>
+						</div><!--end of feature-->						
+						<div class="col-md-2 no-pad-left">
+							<div class="feature feature-icon-left">
+								<div class="feature-text">
+									<p>Approved</p>
+								</div>
+							</div>
+						</div><!--end of feature-->
+						<div class="col-md-1 no-pad-left">
+							<div class="feature feature-icon-left">
+								<div class="feature-text">
+									<p><a href="#">Approve</a></p>
+								</div>
+							</div>
+						</div><!--end of feature-->
+						<div class="col-md-1 no-pad-left">
+							<div class="feature feature-icon-left">
+								<div class="feature-text">
+									<p><a href="#">Reject</a></p>
+								</div>
+							</div>
+						</div><!--end of feature-->
+						<div class="col-md-1 no-pad-left">
+							<div class="feature feature-icon-left">
+								<div class="feature-text">
+									<p><a href="#">Contact</a></p>
+								</div>
+							</div>
+						</div><!--end of feature-->
+					</div><!--end of row-->
 					
 				</div><!--end of container-->
 			</section>

@@ -142,10 +142,10 @@
 			
 			<section class="blog-masonry bg-muted">
 				<div class="row">
-						<div class="col-sm-12 text-center">
-							<h1>Active Studies</h1><br>
-						</div>
-					</div><!--end of row-->
+					<div class="col-sm-12 text-center">
+						<h1>Active Studies</h1><br>
+					</div>
+				</div><!--end of row-->
 				
 				<div class="container">
 					<div class="row">
@@ -163,12 +163,12 @@
 									?>
 									<div class="col-md-4 col-sm-6 blog-masonry-item branding">
 										<div class="item-inner">
-											<a href="blog-single.php">
+											<a href="/wordpress/manage-study.php?id=<?php echo $row['studyID'];?>">
 												<img alt="Blog Preview" src="img/blog-masonry-1.jpg">
 											</a>
 											<div class="post-title">
 												<span class="sub alt-font"><?php echo $row['studyField'];?></span><br>
-												<h2><?php echo $row['studyName'];?></h2>
+												<a href="/wordpress/manage-study.php?id=<?php echo $row['studyID'];?>"><h2><?php echo $row['studyName'];?></h2></a>
 												<p>
 													<?php echo $row['studyDescription'];?>
 													<br><br><a href="/wordpress/manage-study.php?id=<?php echo $row['studyID'];?>#questionnaire">Add or Edit Questionnaires</a>
@@ -208,7 +208,7 @@
 		
 		<div id="footer" class="footer-container">
 		
-			<footer class="details">
+			<footer class="details bg-white">
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-4">
