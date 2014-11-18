@@ -84,7 +84,7 @@
 								<form action="/wordpress/processlogin.php" method="post">
 									<input class="form-email" type="text" placeholder="UTD NetID" name="utdID">
 									<input class="form-password" type="password" placeholder="Password" name="password">
-									<input class="login-btn btn-filled" type="submit" value="Login">
+									<input class="login-btn btn-filled loginButton" type="submit" value="Login">
 								</form>
 							</div><!--end of photo form wrapper-->
 							<a href="signup.php" class="text-white">Don't have a researcher account? Sign Up ➞</a><br>

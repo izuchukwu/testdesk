@@ -1,3 +1,7 @@
+/*Clay Made linkUpdated to format one word on a page*/
+.linkUpdated {
+  margin: -15px;
+}
 .bg-primary {
   background-color: #136480 !important;
 }
@@ -783,7 +787,7 @@ header .container {
   z-index: 3;
 }
 header .logo {
-  max-width: 200px;
+  max-width: 400px;
   display: inline-block;
   margin-bottom: 24px;
 }

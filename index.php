@@ -114,19 +114,26 @@
 							<div class="col-sm-12 text-center">
 								<div class="photo-form-wrapper clearfix">
 									<div class="row">
-										<form action="/wordpress/processlogin.php" method="post">
-											<div class="col-md-5 col-sm-4">
-												<input class="form-email" type="text" placeholder="Sign in with your UTD NetID" name="utdID">
-											</div>
-								
-											<div class="col-md-4 col-sm-4">
-												<input class="form-password" type="password" placeholder="Password" name="password">
-											</div>
-											
-											<div class="col-md-3 col-sm-4">
-												<input type="submit" class="btn btn-primary btn-filled" onclick="signIn()" value="Sign In">
-											</div>
-										</form>
+										<?php
+											if(empty($_COOKIE['loggedinID']))
+											{
+												?>
+												<form action="/wordpress/processlogin.php" method="post">
+													<div class="col-md-5 col-sm-4">
+														<input class="form-email" type="text" placeholder="Sign in with your UTD NetID" name="utdID">
+													</div>
+										
+													<div class="col-md-4 col-sm-4">
+														<input class="form-password" type="password" placeholder="Password" name="password">
+													</div>
+													
+													<div class="col-md-3 col-sm-4">
+														<input type="submit" class="btn btn-primary btn-filled" onclick="signIn()" value="Sign In">
+													</div>
+												</form>
+												<?php
+											}
+										?>
 									</div><!--end of row-->
 						
 								</div><!--end of photo form wrapper-->
@@ -194,14 +201,14 @@
 							<div class="feature-box">
 							
 								<div class="background-image-holder overlay">
-									<img class="background-image" alt="Background Image" src="img/box'.($count+1).'.jpg">
+									<img class="background-image" alt="Background Image" src="img/hero'.($count+1).'.jpg">
 								</div>
 								
 								<div class="inner">
 									<span class="alt-font text-white">'.$row["studyField"].'</span>
 									<h1 class="text-white">'.$row["studyName"].'</h1>
 									<p class="text-white">'.$row["studyDescription"].'</p>
-									<a href="#" class="btn btn-primary btn-white">Learn More</a>
+									<a href="/wordpress/study?id='.$row['studyID'].'" class="btn btn-primary btn-white">Learn More</a>
 								</div>
 							</div>
 							

@@ -43,7 +43,7 @@
 				
 					<div class="row nav-menu text-right">
 						<div class="col-sm-3 col-md-2 columns">
-							<a href="index.html">
+							<a href="index.php">
 								<img class="logo logo-light" alt="Logo" src="img/logo-light.png">
 								<img class="logo logo-dark" alt="Logo" src="img/logo-dark.png">
 							</a>
@@ -51,8 +51,8 @@
 					
 						<div class="col-sm-9 col-md-10 columns">
 							<ul class="menu">
-								<li class=""><a href="studies.html">Open Studies</a></li>
-								<li class=""><a href="signin.html">Start a Study</a></li>
+								<li class=""><a href="studies.php">Open Studies</a></li>
+								<li class=""><a href="signin.php">Start a Study</a></li>
 								<li class=""><a href="#footer">Contact</a></li>
 							</ul>
 						</div>

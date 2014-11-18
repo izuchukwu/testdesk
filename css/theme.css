@@ -1,3 +1,7 @@
+/* loginButton changed for a single button to make it blue -clay */
+.loginButton {
+  background-color: #3498db !important;
+}
 .bg-primary {
   background-color: #e74c3c !important;
 }

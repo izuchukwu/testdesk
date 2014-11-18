@@ -19,6 +19,7 @@
         <link href="css/theme-blues.css" rel="stylesheet" type="text/css" media="all"/>
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700%7CRaleway:700' rel='stylesheet' type='text/css'>
         <script src="js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+        <script src="js/jquery-1.11.1.min.js" type="text/javascript"></script>
         <script type="text/javascript">
 		    function getUrlParameter(sParam)
 			{
@@ -39,23 +40,49 @@
         		var encodedUrl = encodeURIComponent(linkToUpdate);
         		$.ajax("updateLink.php?link="+linkToUpdate+"&id="+getUrlParameter('id'));
         		$("#linkSet").fadeIn("slow");
-        		setTimeout(fade_out, 5000);
+        		setTimeout(fade_out, 3000);
         	}
         	function fade_out ()
         	{
         		$("#linkSet").fadeOut("slow");
         	}
-        	function remove_timeslot()
+        	function remove_timeslot(number)
         	{
-        		$("#timeslot1").fadeOut("slow");
+        		$("#timeslot"+number).fadeOut("slow");
+        		$.ajax("removeTimeSlot.php?remove="+number);
         	}
-        	function actually_remove_timeslot()
-        	{
-
-        	}
+        	$(function()
+			{
+				if(getUrlParameter('num') != null)
+				{
+					document.getElementById("added").innerHTML = getUrlParameter('num')+" New Time Slots Created";
+					setTimeout(fade_update, 10000);
+				}
+			});
+			function fade_update()
+			{
+				$("#added").fadeOut("slow");
+			}
         </script>
     </head>
-    <body>	
+    <body>
+    	<?php
+    		// Create connection
+			$con = mysqli_connect("localhost","root","","wordpress");
+
+			// Check connection
+			if (mysqli_connect_errno())
+			{
+			  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+			}
+
+			$result = mysqli_query($con, "SELECT * FROM Studies WHERE studyID = ".$_GET['id']);
+			$study = mysqli_fetch_array($result);
+
+			$result = mysqli_query($con, "SELECT * FROM Questionnaires WHERE studyID = ".$_GET['id']);
+
+			$timeSlots = mysqli_query($con, "SELECT * FROM ParticipationOpportunities WHERE studyID = ".$_GET['id']." ORDER BY date, startTime");
+    	?>
 		<div class="nav-container">
 			<nav class="top-bar overlay-bar">
 				<div class="container">
@@ -115,9 +142,9 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-12">
-							<a href="dashboard.php"><span class="text-white alt-font">⬅︎ Active Studies</span></a><p></p>
-							<h1 class="text-white">Student Engagement Study</h1>
-							<p class="text-white lead">A study in the engagement of the student population<br>in campus activities and events. </p><br>
+							<a href="dashboard.php"><span class="text-white alt-font">Active Studies</span></a><p></p>
+							<h1 class="text-white"><?php echo $study['studyName'];?></h1>
+							<p class="text-white lead"><?php echo $study['studyDescription'];?></p><br>
 						</div>
 					</div><!--end of row-->
 				</div><!--end of container-->
@@ -137,72 +164,52 @@
 			<section class="duplicatable-content" id="time_slots">
 				<div class="container">
 					<div class="row">
-						<div class="col-md-12">
+						<div class="col-md-3 col-sm-3">
 							<h1>Time Slots</h1>
+						</div>
+						<div class="col-md-9 col-sm-9">
+							<h1 id="added" style="color:#6bb434;"></h1>
 						</div>
 					</div><!--end of row-->
 					<div class="row">
-								<div id="timeslot1" class="col-md-3 no-pad-left">
+								
+						<?php
+							while($slot = mysqli_fetch_array($timeSlots))
+							{
+								?>
+								<div id="timeslot<?php echo $slot['participationOpportunityID'];?>" class="col-md-3 no-pad-left">
 									<div class="feature feature-icon-left">
 										<div class="icon-holder">
 											<i class="icon icon-clock"></i>
 										</div>
 										<div class="feature-text">
-											<h6>2:30 PM, Tues, Dec. 2</h6>
+											<h6><?php echo $slot['startTime']." - ".$slot['endTime'];?>, 
+												<?php
+													$date = new DateTime($slot['date']);
+													echo $date->format('D M. j'); //Tues Dec. 2
+												?></h6>
 											<p>
-												2 Groups Available<br>
-												1 Participant per Group<br>
-												1/2 Participants filled<br>
-												<a href="#time_slot" onclick="remove_timeslot()">Remove Time Slot</a>
+												<?php echo $slot['participantNum'];?>/<?php echo $slot['participantMax'];?> Participants filled<br>
+												<a href="#time_slot" onclick="remove_timeslot(<?php echo $slot[participationOpportunityID];?>)">Remove Time Slot</a>
 											</p>
 										</div>
 									</div>
 								</div><!--end of feature-->
-						
-								<div class="col-md-3 no-pad-left">
-									<div class="feature feature-icon-left">
-										<div class="icon-holder">
-											<i class="icon icon-clock"></i>
-										</div>
-										<div class="feature-text">
-											<h6>2:30 PM, Thurs, Dec. 4</h6>
-											<p>
-												2 Groups Available<br>
-												1 Participant per Group<br>
-												1/2 Participants filled<br>
-												<a href="#">Remove Time Slot</a>
-											</p>
-										</div>
-									</div>
-								</div><!--end of feature-->
+								<?php
+							}
+						?>
 
-								<div class="col-md-3 no-pad-left">
-									<div class="feature feature-icon-left">
-										<div class="icon-holder">
-											<i class="icon icon-clock"></i>
-										</div>
-										<div class="feature-text">
-											<h6>4:30 PM, Thurs, Dec. 4</h6>
-											<p>
-												2 Groups Available<br>
-												1 Participant per Group<br>
-												1/2 Participants filled<br>
-												<a href="#">Remove Time Slot</a> 
-											</p>
-										</div>
-									</div>
-								</div><!--end of feature-->
-
-							</div><!--end of row-->
-							<div class="col-md-9 col-sm-9">
-								<p>
-									Creating time slots enable you to provide opportunities for people to participate.
-									Time slots are divided into groups based on how long each experiment session takes.
-									Opportunities to participate are made available based on how many people you select to be in a single session.
-								</p><br>
-								<input type="submit" class="btn btn-primary btn-filled" value="Add Time Slot">
-
-							</div>
+					</div><!--end of row-->
+					<div class="col-md-9 col-sm-9">
+						<p>
+							Creating time slots enable you to provide opportunities for people to participate in your studies.
+							Add multiple time slots easily by selecting a time period that you're free and slicing it up into time slots.
+							Opportunities to participate are made available based on how many people you select to be in each time slot.
+						</p><br>
+						<a href="/wordpress/manage-timeslots?id=<?php echo $_GET['id']?>">
+							<input type="submit" class="btn btn-primary btn-filled" value="Add Time Slot">
+						</a>
+					</div>
 				</div>
 			</section>
 			
@@ -232,15 +239,32 @@
 							</div>
 
 							<div class="photo-form-wrapper-embed clearfix">
-								<input id="link" class="form-email" type="text" placeholder="Questionnaire Link">
+								<?php
+								if($row = mysqli_fetch_array($result))
+								{
+									?>
+									<input id="link" class="form-email" type="text" placeholder="Questionnaire Link" value="<?php echo $row['link'];?>">
+									<?php
+								}
+								else
+								{
+									?>
+									<input id="link" class="form-email" type="text" placeholder="Questionnaire Link">
+									<?php
+								}
+								?>
 							</div>
 							
-							<div >
-								<input type="submit" class="btn btn-primary btn-filled" onclick="set_link()" value="Set Link">
-							</div>
+							<div class="row">
+								<div class="col-md-3 col-sm-3">
+									<input type="submit" class="btn btn-primary btn-filled" onclick="set_link()" value="Set Link">
+								</div>
 
-							<div >
-								<br><h4 id="linkSet" style="color:#6bb434;display:none">Link Updated</h4>
+								<div class="col-md-4 col-sm-4">
+									<center>
+									<br><h4 class="linkUpdated" id="linkSet" style="color:#6bb434;display:none">Link Updated</h4>
+									</center>
+								</div>
 							</div>
 							<br>
 						</div><!--end 3 col-->
@@ -501,10 +525,12 @@
 				</div><!--end of container-->
 			</footer>
 		</div>
-				
+		
 		<script src="js/jquery.min.js"></script>
         <script src="js/jquery.plugin.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        <script src="js/bootstrap-timepicker.js"></script>
+        <script src="js/bootstrap-timepicker.min.js"></script>
         <script src="js/jquery.flexslider-min.js"></script>
         <script src="js/smooth-scroll.min.js"></script>
         <script src="js/skrollr.min.js"></script>

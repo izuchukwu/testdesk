@@ -186,12 +186,12 @@
 									?>
 									<?php echo $type;?>
 										<div class="item-inner">
-											<a href="#">
-												<img alt="Study" src="img/blog-masonry-1.jpg">
+											<a href="/wordpress/study?id=<?php echo $row['studyID'];?>">
+												<img alt="Study" src="img/blog-masonry-<?php echo intval($row['studyID'])%4+1;?>.jpg">
 											</a>
 											<div class="post-title">
 												<span class="sub alt-font"><?php echo $row['studyField'];?></span><br>
-												<a href="#"><h2><?php echo $row['studyName'];?></h2></a>
+												<a href="/wordpress/study?id=<?php echo $row['studyID'];?>"><h2><?php echo $row['studyName'];?></h2></a>
 												<p>
 													<?php echo $row['studyDescription'];?>
 												</p>
@@ -227,7 +227,7 @@
 										<i class="icon icon-pencil"></i>
 									</div>
 									<div class="title">
-										<a href="#">Forget the status quo. Research differently, without the mess.</a>
+										<a href="/wordpress/signup.php">Forget the status quo. Research differently, without the mess.</a>
 										<span class="sub">Forget jumping between Microsoft Excel and Google Sheets. Forget losing secure access to your research data when away from your desk. Forget manually keeping track of participants and manually sending out reminders before appointments. TestDesk changes all of that.</span>
 									</div>
 								</li>
@@ -237,7 +237,7 @@
 										<i class="icon icon-calendar"></i>
 									</div>
 									<div class="title">
-										<a href="#">All your documents, results, and participants in one place.</a>
+										<a href="/wordpress/signup.php">All your documents, results, and participants in one place.</a>
 										<span class="sub">TestDesk rethinks research from the ground up. Automate creating &amp; distributing professionally designed promotional items like emails, newsletters, and flyers for your study with ease. Automatically track participant eligibility and results, and send reminders for upcoming time slots automically. And for participants, signing up is as easy as a click.</span>
 									</div>
 								</li>
@@ -247,7 +247,7 @@
 										<i class="icon icon-newspaper"></i>
 									</div>
 									<div class="title">
-										<a href="#">Get started, and change the way you researchf for th ebttter.</a>
+										<a href="/wordpress/signup.php">Get started, and change the way you research for the better.</a>
 										<span class="sub">You've heard what TestDesk can do, now see it for yourself. TestDesk is changing the way researchers work worldwide, and now we've partnered with The University of Texas at Dallas to provide TestDesk to all UT Dallas approved researchers free of charge. Start a study to get started and see how TestDesk changes your workflow for the better. <a href="signin.php">Start a study</a></span>
 									</div>
 								</li>

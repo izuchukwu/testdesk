@@ -121,7 +121,20 @@
 						</div>
 
 						<div class="col-md-6 col-sm-12">
-							<h1 class="text-white pull-right"><?php echo $userStudies->num_rows;?> Active Study<br></h1>
+							<?php
+								if($userStudies->num_rows == 1)
+								{
+									?>
+									<h1 class="text-white pull-right">1 Active Study<br></h1>
+									<?php
+								}
+								else
+								{
+									?>
+									<h1 class="text-white pull-right"><?php echo $userStudies->num_rows;?> Active Studies<br></h1>
+									<?php
+								}
+							?>
 						</div>
 					</div><!--end of row-->
 				</div><!--end of container-->
@@ -141,6 +154,12 @@
 							<?php
 								while($row = mysqli_fetch_array($userStudies))
 								{
+									$timeSlots = mysqli_query($con, "SELECT * FROM ParticipationOpportunities WHERE studyID = '".$row['studyID']."'");
+									$count = 0;
+									while($slot = mysqli_fetch_array($timeSlots))
+									{
+										$count += intval($slot['numParticipants']);
+									}
 									?>
 									<div class="col-md-4 col-sm-6 blog-masonry-item branding">
 										<div class="item-inner">
@@ -152,11 +171,11 @@
 												<h2><?php echo $row['studyName'];?></h2>
 												<p>
 													<?php echo $row['studyDescription'];?>
-													<br><br><a href="#">Add or Edit Questionnaires</a>
-													<br><a href="#">Add or Edit Time Slots</a>
+													<br><br><a href="/wordpress/manage-study.php?id=<?php echo $row['studyID'];?>#questionnaire">Add or Edit Questionnaires</a>
+													<br><a href="/wordpress/manage-study.php?id=<?php echo $row['studyID'];?>#time_slots">Add or Edit Time Slots</a>
 												</p>
 												<div class="post-meta">
-													<span class="sub alt-font">4 Participants</span>
+													<span class="sub alt-font"><?php echo $count;?> Participants</span>
 												</div>
 												<div class="row">
 													<a href="/wordpress/manage-study.php?id=<?php echo $row['studyID'];?>" class="link-text">View/Edit Study</a>
