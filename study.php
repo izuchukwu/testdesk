@@ -39,9 +39,7 @@
 				if(getUrlParameter('success') == 'true')
 				{
 					document.getElementById("signedup").innerHTML = "Successfully Signed Up";
-					var win = window.open('http://www.google.com', '_blank');
-  					win.focus();
-					//setTimeout(fade_update, 5000);
+					setTimeout(fade_update, 5000);
 				}
 			});
 			function fade_update()
