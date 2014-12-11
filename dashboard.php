@@ -125,7 +125,7 @@
 								if($userStudies->num_rows == 1)
 								{
 									?>
-									<h1 class="text-white pull-right">1 Active Study<br></h1>
+									<h1 class="text-white pull-right">1 Active Study</h1>
 									<?php
 								}
 								else

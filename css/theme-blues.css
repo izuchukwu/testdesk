@@ -266,8 +266,8 @@ span.text-white a {
   }
 }
 section {
-  padding-top: 80px;
-  padding-bottom: 80px;
+  padding-top: 40px;
+  padding-bottom: 40px;
   position: relative;
   overflow: hidden;
 }
@@ -800,7 +800,7 @@ header .btn:last-child {
 .page-header {
   margin: 0px;
   padding: 0px;
-  padding: 80px 0px;
+  padding: 40px 0px;
   border-bottom: none;
 }
 .page-header h1 {
