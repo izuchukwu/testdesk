@@ -20,6 +20,20 @@
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700%7CRaleway:700' rel='stylesheet' type='text/css'>
         <script src="js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
         <script src="js/jquery-1.11.1.min.js" type="text/javascript"></script>
+        <?php
+    		// Create connection
+			$con = mysqli_connect("localhost","root","","wordpress");
+
+			// Check connection
+			if (mysqli_connect_errno())
+			{
+				echo "Failed to connect to MySQL: " . mysqli_connect_error();
+			}
+
+			$result = mysqli_query($con, "SELECT * FROM Questionnaires WHERE studyID = ".$_GET['id']);
+			$question = mysqli_fetch_array($result);
+		?>
+
         <script type="text/javascript">
         	function getUrlParameter(sParam)
 			{
@@ -39,7 +53,7 @@
 				if(getUrlParameter('success') == 'true')
 				{
 					document.getElementById("signedup").innerHTML = "Successfully Signed Up";
-					var win = window.open('http://www.google.com', '_blank');
+					var win = window.open('http://<?php echo $question['link']?>', '_blank');
   					win.focus();
 					//setTimeout(fade_update, 5000);
 				}
@@ -51,16 +65,7 @@
         </script>
     </head>
     <body>
-    	<?php
-    		// Create connection
-			$con = mysqli_connect("localhost","root","","wordpress");
-
-			// Check connection
-			if (mysqli_connect_errno())
-			{
-				echo "Failed to connect to MySQL: " . mysqli_connect_error();
-			}
-
+		<?php
 			$result = mysqli_query($con, "SELECT * FROM Studies WHERE studyID = ".$_GET['id']);
 			$study = mysqli_fetch_array($result);
 

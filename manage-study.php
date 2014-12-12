@@ -41,6 +41,18 @@
         		$.ajax("updateLink.php?link="+linkToUpdate+"&id="+getUrlParameter('id'));
         		$("#linkSet").fadeIn("slow");
         		setTimeout(fade_out, 3000);
+        		location.reload();
+        	}
+        	function approve_p(id)
+        	{
+        		console.log("Hello");
+        		$.ajax("approveParticipant.php?id="+id);
+        		location.reload();
+        	}
+        	function remove_p(id)
+        	{
+        		$("#part"+id).fadeOut("slow");
+        		$.ajax("removeParticipant.php?remove="+id);
         	}
         	function fade_out ()
         	{
@@ -78,6 +90,9 @@
 
 			$result = mysqli_query($con, "SELECT * FROM Studies WHERE studyID = ".$_GET['id']);
 			$study = mysqli_fetch_array($result);
+
+			$result = mysqli_query($con, "SELECT * FROM Questionnaires WHERE studyID = ".$_GET['id']);
+			$question = mysqli_fetch_array($result);
 
 			$result = mysqli_query($con, "SELECT * FROM Questionnaires WHERE studyID = ".$_GET['id']);
 
@@ -281,6 +296,10 @@
 								<div class="col-md-3 col-sm-3">
 									<input type="submit" class="btn btn-primary btn-filled" onclick="set_link()" value="Set Link">
 								</div>
+								<div class="col-md-1 col-sm-1"/>
+								<div class="col-md-3 col-sm-3">
+									<a href="http://<?php echo $question['link'] ?>" target="_blank"><input type="submit" class="btn btn-primary btn-filled" value="Preview"></a>
+								</div>
 
 								<div class="col-md-4 col-sm-4">
 									<center>
@@ -295,8 +314,8 @@
 			
 			</section>
 			
-			<section class="team-2" id="participation">
-				<div class="container">
+			<section class="team-2">
+				<div class="container" id="participation">
 					<div class="row">
 						<div class="col-sm-12">
 							<h1>Participation</h1>
@@ -304,14 +323,14 @@
 					</div><!--end of row-->
 
 					<div class="row">
-						<div class="col-md-1 no-pad-left">
+						<div class="col-md-1 col-sm-1 no-pad-left">
 							<div class="">
 								<div class="feature-text">
 									<h6>ID</h6>
 								</div>
 							</div>
 						</div><!--end of feature-->
-						<div class="col-md-3 no-pad-left">
+						<div class="col-md-3 col-sm-3 no-pad-left">
 							<div class="">
 								<div class="feature-text">
 									<h6>Name</h6>
@@ -319,22 +338,22 @@
 							</div>
 						</div><!--end of feature-->
 				
-						<div class="col-md-2 no-pad-left">
-							<div class="feature feature-icon-left">
+						<div class="col-md-2 col-sm-2 no-pad-left">
+							<div class="">
 								<div class="feature-text">
 									<h6>NetID</h6>
 								</div>
 							</div>
 						</div><!--end of feature-->						
-						<div class="col-md-2 no-pad-left">
-							<div class="feature feature-icon-left">
+						<div class="col-md-2 col-sm-2 no-pad-left">
+							<div class="">
 								<div class="feature-text">
 									<h6>Status</h6>
 								</div>
 							</div>
 						</div><!--end of feature-->
-						<div class="col-md-2 no-pad-left">
-							<div class="feature feature-icon-left">
+						<div class="col-md-2 col-sm-2 no-pad-left">
+							<div class="">
 								<div class="feature-text">
 									<h6>Actions</h6>
 								</div>
@@ -342,114 +361,65 @@
 						</div><!--end of feature-->
 					</div><!--end of row-->
 
+					<?php
+						$result = mysqli_query($con, "SELECT * FROM ParticipationOpportunities WHERE studyID = ".$_GET['id']);
+						while($pos = mysqli_fetch_array($result))
+						{
+							$ps = mysqli_query($con, "SELECT * FROM Participants WHERE participationOpportunityID = ".$pos['participationOpportunityID']);
+							while($p = mysqli_fetch_array($ps))
+							{
+								?>
+								<div class="row" id="part<?php echo $p['participantID'];?>">
+									<div class="col-md-1 col-sm-1 no-pad-left">
+										<div class="">
+											<div class="feature-text">
+												<p><?php echo $p['participantID']?></p>
+											</div>
+										</div>
+									</div><!--end of feature-->
+									<div class="col-md-3 col-sm-3 no-pad-left">
+										<div class="">
+											<div class="feature-text">
+												<p><?php echo $p['firstName']." ".$p['lastName']?></p>
+											</div>
+										</div>
+									</div><!--end of feature-->
+							
+									<div class="col-md-2 col-sm-2 no-pad-left">
+										<div class="">
+											<div class="feature-text">
+												<p><?php echo $p['netID']?></p>
+											</div>
+										</div>
+									</div><!--end of feature-->						
+									<div class="col-md-2 col-sm-2 no-pad-left">
+										<div class="">
+											<div class="feature-text">
+												<p><?php echo $p['status']?></p>
+											</div>
+										</div>
+									</div><!--end of feature-->
+									<div class="col-md-1 col-sm-1 no-pad-left">
+										<div class="">
+											<div class="feature-text">
+												<p><a href="#participation" onclick="approve_p(<?php echo $p['participantID']?>)">Approve</a></p>
+											</div>
+										</div>
+									</div><!--end of feature-->
+									<div class="col-md-1 col-sm-1 no-pad-left">
+										<div class="">
+											<div class="feature-text">
+												<p><a href="#participation" onclick="remove_p(<?php echo $p['participantID']?>)">Reject</a></p>
+											</div>
+										</div>
+									</div><!--end of feature-->
+								</div><!--end of row-->
+								<?php
+							}
+						}
+					?>
 
-					<div class="row">
-						<div class="col-md-1 no-pad-left">
-							<div class="">
-								<div class="feature-text">
-									<p>001</p>
-								</div>
-							</div>
-						</div><!--end of feature-->
-						<div class="col-md-3 no-pad-left">
-							<div class="">
-								<div class="feature-text">
-									<p>Cody Farris</p>
-								</div>
-							</div>
-						</div><!--end of feature-->
-				
-						<div class="col-md-2 no-pad-left">
-							<div class="feature feature-icon-left">
-								<div class="feature-text">
-									<p>cxf111000</p>
-								</div>
-							</div>
-						</div><!--end of feature-->						
-						<div class="col-md-2 no-pad-left">
-							<div class="feature feature-icon-left">
-								<div class="feature-text">
-									<p>Survey Complete</p>
-								</div>
-							</div>
-						</div><!--end of feature-->
-						<div class="col-md-1 no-pad-left">
-							<div class="feature feature-icon-left">
-								<div class="feature-text">
-									<p><a href="#">Approve</a></p>
-								</div>
-							</div>
-						</div><!--end of feature-->
-						<div class="col-md-1 no-pad-left">
-							<div class="feature feature-icon-left">
-								<div class="feature-text">
-									<p><a href="#">Reject</a></p>
-								</div>
-							</div>
-						</div><!--end of feature-->
-						<div class="col-md-1 no-pad-left">
-							<div class="feature feature-icon-left">
-								<div class="feature-text">
-									<p><a href="#">Contact</a></p>
-								</div>
-							</div>
-						</div><!--end of feature-->
-					</div><!--end of row-->
 
-
-					<div class="row">
-						<div class="col-md-1 no-pad-left">
-							<div class="">
-								<div class="feature-text">
-									<p>002</p>
-								</div>
-							</div>
-						</div><!--end of feature-->
-						<div class="col-md-3 no-pad-left">
-							<div class="">
-								<div class="feature-text">
-									<p>Clay Howell</p>
-								</div>
-							</div>
-						</div><!--end of feature-->
-				
-						<div class="col-md-2 no-pad-left">
-							<div class="feature feature-icon-left">
-								<div class="feature-text">
-									<p>cxh210310</p>
-								</div>
-							</div>
-						</div><!--end of feature-->						
-						<div class="col-md-2 no-pad-left">
-							<div class="feature feature-icon-left">
-								<div class="feature-text">
-									<p>Approved</p>
-								</div>
-							</div>
-						</div><!--end of feature-->
-						<div class="col-md-1 no-pad-left">
-							<div class="feature feature-icon-left">
-								<div class="feature-text">
-									<p><a href="#">Approve</a></p>
-								</div>
-							</div>
-						</div><!--end of feature-->
-						<div class="col-md-1 no-pad-left">
-							<div class="feature feature-icon-left">
-								<div class="feature-text">
-									<p><a href="#">Reject</a></p>
-								</div>
-							</div>
-						</div><!--end of feature-->
-						<div class="col-md-1 no-pad-left">
-							<div class="feature feature-icon-left">
-								<div class="feature-text">
-									<p><a href="#">Contact</a></p>
-								</div>
-							</div>
-						</div><!--end of feature-->
-					</div><!--end of row-->
-					
 				</div><!--end of container-->
 			</section>
 
@@ -467,7 +437,7 @@
 									Permanently delete your study. Think twice. Please note that this cannot be undone.<br>Upon clicking the button below, an email confirmation for deletion will be emailed to you. Follow the link to complete the deletion.
 								</p><br>
 							<div >
-								<a href="signup-requested.php"><input type="submit" class="btn btn-primary btn-filled" style="background-color:#ff0000; border-color:#ff0000" value="Delete Study"></a>
+								<a href="delete-study.php?id=<?php echo $_GET['id']?>"><input type="submit" class="btn btn-primary btn-filled" style="background-color:#ff0000; border-color:#ff0000" value="Delete Study"></a>
 							</div>
 						</div></div>
 				</div>

@@ -3,40 +3,74 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> 
-<html class="no-js"> <!--<![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
-        <meta charset="utf-8">
-        <title>Dashboard | TestDesk</title>
+		<meta charset="utf-8">
+
+		<title>Manage Study | TestDesk</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--meta http-equiv="Content-Type" content="text/html; charset=utf-8" /-->
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <!--link href="css/bootstrap-clay.min.css" rel="stylesheet" type="text/css" media="all"/-->
+        <link href="css/bootstrap-timepicker-clay.min.css" rel="stylesheet" type="text/css" media="all"/>
+        <script src="js/jquery-1.11.1.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap-timepicker.min.js"></script>
+
         <link href="css/flexslider.min.css" rel="stylesheet" type="text/css" media="all"/>
         <link href="css/line-icons.min.css" rel="stylesheet" type="text/css" media="all"/>
         <link href="css/elegant-icons.min.css" rel="stylesheet" type="text/css" media="all"/>
         <link href="css/lightbox.min.css" rel="stylesheet" type="text/css" media="all"/>
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all"/>
+        <!--link href="css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" media="all"/-->
         <link href="css/theme-blues.css" rel="stylesheet" type="text/css" media="all"/>
+        <link href="jquery/jquery-ui.min.css" rel="stylesheet" type="text/css" media="all"/>
+        <link href="jquery/jquery-ui.structure.min.css" rel="stylesheet" type="text/css" media="all"/>
+        <link href="jquery/jquery-ui.theme.min.css" rel="stylesheet" type="text/css" media="all"/>
+        <link href="jquery-timepicker/jquery.timepicker.css" rel="stylesheet" type="text/css" media="all"/>
+        <link href="bootstrap-datepicker/bootstrap-datepicker.css" rel="stylesheet" type="text/css" media="all"/>
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700%7CRaleway:700' rel='stylesheet' type='text/css'>
+        
+        <script src="jquery/external/jquery/jquery.js"></script>
         <script src="js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+        <script src="jquery/jquery-ui.min.js"></script>
+        <script src="bootstrap-datepicker/bootstrap-datepicker.js"></script>
+
+        <script>
+			$(function()
+			{
+				$( "#datepicker" ).datepicker();
+				$('#timepicker1').timepicker(
+				{
+				    minuteStep: 5,
+				    showInputs: false,
+				    disableFocus: true
+				});
+				$('#timepicker2').timepicker(
+				{
+				    minuteStep: 5,
+				    showInputs: false,
+				    disableFocus: true
+				});
+				//Set initial values
+				$('#timepicker1').val("Start Time");
+				$('#timepicker2').val("End Time");
+			});
+        </script>
     </head>
     <body>
-		<?php
-			// Create connection
+    	<?php
+    		// Create connection
 			$con = mysqli_connect("localhost","root","","wordpress");
 
 			// Check connection
 			if (mysqli_connect_errno())
 			{
-			  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+				echo "Failed to connect to MySQL: " . mysqli_connect_error();
 			}
-
-			$result = mysqli_query($con, "SELECT * FROM Users WHERE utdID = '".$_COOKIE['loggedinID']."'");
-			$user = mysqli_fetch_array($result);
-
-			$userStudies = mysqli_query($con, "SELECT * FROM Studies WHERE userID = '".$user['userID']."'");
-
-		?>
+    	?>
 		<div class="nav-container">
 			<nav class="top-bar overlay-bar">
 				<div class="container">
@@ -106,7 +140,6 @@
 				</div><!--end of container-->
 			</nav>
 		</div>
-		
 		<div class="main-container">
 			<header class="page-header">
 				<div class="background-image-holder parallax-background">
@@ -115,105 +148,59 @@
 				
 				<div class="container">
 					<div class="row">
-						<div class="col-md-6 col-sm-12">
-							<span class="text-white alt-font">Welcome Back, <?php echo $user['name']?></span>
-							<h1 class="text-white">Dashboard</h1>
-						</div>
-
-						<div class="col-md-6 col-sm-12">
-							<?php
-								if($userStudies->num_rows == 1)
-								{
-									?>
-									<h1 class="text-white pull-right">1 Active Study</h1>
-									<?php
-								}
-								else
-								{
-									?>
-									<h1 class="text-white pull-right"><?php echo $userStudies->num_rows;?> Active Studies<br></h1>
-									<?php
-								}
-							?>
+						<div class="col-sm-12">
+							<h1 class="text-white">Create New Study</h1>
 						</div>
 					</div><!--end of row-->
 				</div><!--end of container-->
 			</header>
 			
-			<section class="blog-masonry bg-muted">
-				<div class="row">
-					<div class="col-sm-12 text-center">
-						<h1>Active Studies</h1><br>
-					</div>
-				</div><!--end of row-->
-				
+			<section class="duplicatable-content bg-white" id="time_slots">
+			
 				<div class="container">
 					<div class="row">
-						<div class="blog-masonry-container">
-						
-							<?php
-								while($row = mysqli_fetch_array($userStudies))
-								{
-									$timeSlots = mysqli_query($con, "SELECT * FROM ParticipationOpportunities WHERE studyID = '".$row['studyID']."'");
-									$participants = mysqli_query($con, "SELECT * FROM Participants WHERE studyID = '".$row['studyID']."'");
-									$count = 0;
-									$total = 0;
-									while($slot = mysqli_fetch_array($timeSlots))
-									{
-										$participants = mysqli_query($con, "SELECT * FROM Participants WHERE participationOpportunityID = '".$slot['participationOpportunityID']."'");
-										while($each = mysqli_fetch_array($participants))
-											$count += 1;
-										$total += intval($slot['participantMax']);
-									}
-									?>
-									<div class="col-md-4 col-sm-6 blog-masonry-item branding">
-										<div class="item-inner">
-											<a href="/wordpress/manage-study.php?id=<?php echo $row['studyID'];?>">
-												<img alt="Blog Preview" src="img/blog-masonry-1.jpg">
-											</a>
-											<div class="post-title">
-												<span class="sub alt-font"><?php echo $row['studyField'];?></span><br>
-												<a href="/wordpress/manage-study.php?id=<?php echo $row['studyID'];?>"><h2><?php echo $row['studyName'];?></h2></a>
-												<p>
-													<?php echo $row['studyDescription'];?>
-													<br><br><a href="/wordpress/manage-study.php?id=<?php echo $row['studyID'];?>#questionnaire">Add or Edit Questionnaires</a>
-													<br><a href="/wordpress/manage-study.php?id=<?php echo $row['studyID'];?>#time_slots">Add or Edit Time Slots</a>
-												</p>
-												<div class="post-meta">
-													<span class="sub alt-font"><?php echo $count."/".$total;?> Participants</span>
-												</div>
-												<div class="row">
-													<a href="/wordpress/manage-study.php?id=<?php echo $row['studyID'];?>" class="link-text">View/Edit Study</a>
-												</div>
-											</div>
-										</div>
-									</div><!--end of individual post-->
-									<?php
-								}
-							?>
-							
-							<div class="col-md-4 col-sm-6 blog-masonry-item development">
-								<a href="new-study-hiatus.php"><div class="item-inner">
-									<div class="post-title">
-										<div class="feature feature-icon-large">
-											<i class="icon icon-lightbulb"></i>
-										</div>
-										<h2>Start a New Study</h2>
-										<p>
-											Click here to get started on a new study. You take care of the research, we'll take care of the rest.
-										</p>
-									</div>
-								</div></a>
-							</div><!--end of individual post-->
-						
-						</div><!--end of blog masonry container-->
+						<div class="col-md-12">
+							<h1>New Study</h1>
+						</div>
 					</div><!--end of row-->
-				</div><!--end of container-->
+
+					<div class="row">
+						
+						<div class="col-md-9 col-sm-9">
+							<div class="feature  feature-icon-large">
+								<h5>Creating a new study</h5>
+								<p>
+									Creating a new study is easy as pie. Fill out the information then click 'Create' and you're done!
+								</p>
+							</div>
+
+
+							<form action="/wordpress/processstudy.php" method="post" class="form-contact">
+								<div class="photo-form-wrapper-embed clearfix">
+									<input type="text" placeholder="Name" name="name" required>
+									<input type="text" placeholder="Study Field" name="field" required>
+								</div>
+
+								<div class="row">
+			                        <div>
+			                            <div class="form-wrapper clearfix">
+		                                    <div class="inputs-wrapper">
+		                                        <textarea class="form-message" name="desc" placeholder="(Optional) Description"></textarea>
+		                                    </div>
+			                            </div>
+			                        </div>
+			                	</div><!--end of row-->
+
+			                	<center><input type="submit" class="btn btn-primary btn-filled" value="create study"></center>
+							</form>
+						</div><!--end 3 col-->
+					</div><!--end of row-->
+				</div>
+			
 			</section>
-		
 		<div id="footer" class="footer-container">
 		
-			<footer class="details bg-white">
+			<footer class="details">
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-4">
@@ -278,10 +265,13 @@
 				</div><!--end of container-->
 			</footer>
 		</div>
-				
+		
+		<script src="js/jquery-1.11.1.min.js"></script>
 		<script src="js/jquery.min.js"></script>
         <script src="js/jquery.plugin.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        <script src="js/bootstrap-timepicker.js"></script>
+        <script src="js/bootstrap-timepicker.min.js"></script>
         <script src="js/jquery.flexslider-min.js"></script>
         <script src="js/smooth-scroll.min.js"></script>
         <script src="js/skrollr.min.js"></script>
@@ -292,6 +282,7 @@
         <script src="js/lightbox.min.js"></script>
         <script src="js/jquery.countdown.min.js"></script>
         <script src="js/scripts.js"></script>
+        <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
     </body>
 </html>
 				

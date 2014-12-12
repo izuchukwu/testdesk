@@ -202,7 +202,7 @@
 									<?php echo $type;?>
 										<div class="item-inner">
 											<a href="/wordpress/study.php?id=<?php echo $row['studyID'];?>">
-												<img alt="Study" src="img/blog-masonry-<?php echo intval($row['studyID'])%4+1;?>.jpg">
+												<img alt="Study" src="img/blog-masonry-<?php echo 1;?>.jpg">
 											</a>
 											<div class="post-title">
 												<span class="sub alt-font"><?php echo $row['studyField'];?></span><br>
@@ -210,9 +210,6 @@
 												<p>
 													<?php echo $row['studyDescription'];?>
 												</p>
-												<div class="post-meta">
-													<span class="sub alt-font">Open</span>
-												</div>
 												<?php echo $learnMoreLink;?>
 											</div>
 										</div>
