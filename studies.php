@@ -194,6 +194,8 @@
 										$type = $type.'atec ';
 									if($row['studyField'] == 'BIOMEDICAL ENGINEERING')
 										$type = $type.'eng ';
+									if($row['studyField'] == 'Engineering')
+										$type = $type.'eng ';
 									if($row['studyField'] == 'PSYCHOLOGY')
 										$type = $type.'psych ';
 									$type = $type.'">';

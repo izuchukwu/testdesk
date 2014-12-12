@@ -13,8 +13,8 @@
 		$user = mysqli_fetch_array($result);
 
 		$query = 'INSERT INTO
-			Studies (userID, studyName, studyField, studyDescription)
-			VALUES ("'.$user['userID'].'", "'.$_POST["name"].'","'.$_POST["field"].'","'.$_POST["desc"].'")';
+			Studies (userID, studyName, studyField, studyDescription, groupNum)
+			VALUES ("'.$user['userID'].'", "'.$_POST["name"].'","'.$_POST["field"].'","'.$_POST["desc"].'","'.$_POST['groups'].'")';
 		//echo $query.'<br>';
 		mysqli_query($con,$query);
 

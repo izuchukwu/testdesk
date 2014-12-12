@@ -179,6 +179,7 @@
 								<div class="photo-form-wrapper-embed clearfix">
 									<input type="text" placeholder="Name" name="name" required>
 									<input type="text" placeholder="Study Field" name="field" required>
+									<input class="form-email" type="number" min="1" placeholder="Number of Groups" name="groups" required>
 								</div>
 
 								<div class="row">

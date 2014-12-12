@@ -106,7 +106,7 @@
 								<div class="col-sm-9 col-md-10 columns">
 									<ul class="menu">
 										<li class=""><a href="studies.php">Open Studies</a></li>
-										<li class=""><a href="signin.php">Start a Study</a></li>
+										<li class=""><a href="signin.php">Sign In</a></li>
 										<li class=""><a href="#footer">Contact</a></li>
 									</ul>
 								</div>

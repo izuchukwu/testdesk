@@ -35,8 +35,8 @@
 			{
 				//Add Row to ParticipationOpportunities
 				$query = 'INSERT INTO
-					ParticipationOpportunities (studyID, date, startTime, endTime, participantNum, participantMax)
-					VALUES ('.$_GET['id'].', "'.$_POST["date"].'","'.$prevTime->format('H:i').'","'.$startTime->format('H:i').'",0,'.$_POST["participantNum"].')';
+					ParticipationOpportunities (studyID, date, startTime, endTime, participantMax)
+					VALUES ('.$_GET['id'].', "'.$_POST["date"].'","'.$prevTime->format('H:i').'","'.$startTime->format('H:i').'",'.$_POST["participantNum"].')';
 				//echo $query.'<br>';
 				mysqli_query($con,$query);
 				$prevTime = clone $startTime;

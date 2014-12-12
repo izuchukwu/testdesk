@@ -45,8 +45,10 @@
         	}
         	function approve_p(id)
         	{
-        		console.log("Hello");
-        		$.ajax("approveParticipant.php?id="+id);
+        		var str = $("#group"+id).val();
+        		var getnum = str.substring(5);
+        		console.log("approveParticipant.php?id="+id+"&group="+getnum);
+        		$.ajax("approveParticipant.php?id="+id+"&group="+getnum);
         		location.reload();
         	}
         	function remove_p(id)
@@ -269,10 +271,6 @@
 						<div class="col-md-6 col-sm-9">
 							<div class="feature  feature-icon-large">
 								<h5>Edit Questionnaire Link</h5>
-								<p>
-									If you would like to include a questionnaire, set one up with <a href="http://qualtrics.com" target="#">Qualtrics</a> or<br>another form
-									provider of your choice and enter the link below.<br>If you'd prefer not to have one, simply leave the field blank.
-								</p>
 							</div>
 
 							<div class="photo-form-wrapper-embed clearfix">
@@ -293,6 +291,9 @@
 							</div>
 							
 							<div class="row">
+								<p>
+									Set the link first then click 'Preview' to make sure you're using the correct link.
+								</p>
 								<div class="col-md-3 col-sm-3">
 									<input type="submit" class="btn btn-primary btn-filled" onclick="set_link()" value="Set Link">
 								</div>
@@ -321,6 +322,15 @@
 							<h1>Participation</h1>
 						</div>
 					</div><!--end of row-->
+
+					<!-- PENDING -->
+					<div class="row">
+						<div class="no-pad-left">
+							<div class="feature-text">
+								<h6>Pending</h6>
+							</div>
+						</div><!--end of feature-->
+					</div>
 
 					<div class="row">
 						<div class="col-md-1 col-sm-1 no-pad-left">
@@ -362,10 +372,12 @@
 					</div><!--end of row-->
 
 					<?php
+						$studies = mysqli_query($con, "SELECT * FROM Studies WHERE studyID = ".$_GET['id']);
+						$theStudy = mysqli_fetch_array($studies);
 						$result = mysqli_query($con, "SELECT * FROM ParticipationOpportunities WHERE studyID = ".$_GET['id']);
 						while($pos = mysqli_fetch_array($result))
 						{
-							$ps = mysqli_query($con, "SELECT * FROM Participants WHERE participationOpportunityID = ".$pos['participationOpportunityID']);
+							$ps = mysqli_query($con, "SELECT * FROM Participants WHERE participationOpportunityID = ".$pos['participationOpportunityID']." and groupID = 0");
 							while($p = mysqli_fetch_array($ps))
 							{
 								?>
@@ -399,6 +411,18 @@
 											</div>
 										</div>
 									</div><!--end of feature-->
+									<div class="col-md-2 col-sm-2 no-pad-left">
+										<select id="group<?php echo $p['participantID'];?>">
+											<?php
+											for($i = 1; $i <= $theStudy['groupNum']; $i++)
+											{
+												?>
+												<option value="group<?php echo $i?>">Group <?php echo $i?></option>
+												<?php
+											}
+											?>
+										</select>
+									</div><!--end of feature-->
 									<div class="col-md-1 col-sm-1 no-pad-left">
 										<div class="">
 											<div class="feature-text">
@@ -415,6 +439,133 @@
 									</div><!--end of feature-->
 								</div><!--end of row-->
 								<?php
+							}
+						}
+					?>
+
+					<?php
+						for($a = 1; $a <= $theStudy['groupNum']; $a++)
+						{
+							$result = mysqli_query($con, "SELECT * FROM ParticipationOpportunities WHERE studyID = ".$_GET['id']);
+							?>
+							<br>
+							<!-- Group # -->
+							<div class="row">
+								<div class="no-pad-left">
+									<div class="feature-text">
+										<h6>Group <?php echo $a?></h6>
+									</div>
+								</div><!--end of feature-->
+							</div>
+
+							<div class="row">
+								<div class="col-md-1 col-sm-1 no-pad-left">
+									<div class="">
+										<div class="feature-text">
+											<h6>ID</h6>
+										</div>
+									</div>
+								</div><!--end of feature-->
+								<div class="col-md-3 col-sm-3 no-pad-left">
+									<div class="">
+										<div class="feature-text">
+											<h6>Name</h6>
+										</div>
+									</div>
+								</div><!--end of feature-->
+						
+								<div class="col-md-2 col-sm-2 no-pad-left">
+									<div class="">
+										<div class="feature-text">
+											<h6>NetID</h6>
+										</div>
+									</div>
+								</div><!--end of feature-->						
+								<div class="col-md-2 col-sm-2 no-pad-left">
+									<div class="">
+										<div class="feature-text">
+											<h6>Status</h6>
+										</div>
+									</div>
+								</div><!--end of feature-->
+								<div class="col-md-2 col-sm-2 no-pad-left">
+									<div class="">
+										<div class="feature-text">
+											<h6>Actions</h6>
+										</div>
+									</div>
+								</div><!--end of feature-->
+							</div><!--end of row-->
+
+							<?php
+
+							while($pos = mysqli_fetch_array($result))
+							{
+								$ps = mysqli_query($con, "SELECT * FROM Participants WHERE participationOpportunityID = ".$pos['participationOpportunityID']." and groupID = ".$a);
+								while($p = mysqli_fetch_array($ps))
+								{
+									?>
+									<div class="row" id="part<?php echo $p['participantID'];?>">
+										<div class="col-md-1 col-sm-1 no-pad-left">
+											<div class="">
+												<div class="feature-text">
+													<p><?php echo $p['participantID']?></p>
+												</div>
+											</div>
+										</div><!--end of feature-->
+										<div class="col-md-3 col-sm-3 no-pad-left">
+											<div class="">
+												<div class="feature-text">
+													<p><?php echo $p['firstName']." ".$p['lastName']?></p>
+												</div>
+											</div>
+										</div><!--end of feature-->
+								
+										<div class="col-md-2 col-sm-2 no-pad-left">
+											<div class="">
+												<div class="feature-text">
+													<p><?php echo $p['netID']?></p>
+												</div>
+											</div>
+										</div><!--end of feature-->						
+										<div class="col-md-2 col-sm-2 no-pad-left">
+											<div class="">
+												<div class="feature-text">
+													<p><?php echo $p['status']?></p>
+												</div>
+											</div>
+										</div><!--end of feature-->
+										<div class="col-md-2 col-sm-2 no-pad-left">
+											<select id="group<?php echo $p['participantID'];?>">
+												<?php
+												$studies = mysqli_query($con, "SELECT * FROM Studies WHERE studyID = ".$_GET['id']);
+												$theStudy = mysqli_fetch_array($studies);
+												for($i = 1; $i <= $theStudy['groupNum']; $i++)
+												{
+													?>
+													<option value="group<?php echo $i?>">Group <?php echo $i?></option>
+													<?php
+												}
+												?>
+											</select>
+										</div><!--end of feature-->
+										<div class="col-md-1 col-sm-1 no-pad-left">
+											<div class="">
+												<div class="feature-text">
+													<p><a href="#participation" onclick="approve_p(<?php echo $p['participantID']?>)">Approve</a></p>
+												</div>
+											</div>
+										</div><!--end of feature-->
+										<div class="col-md-1 col-sm-1 no-pad-left">
+											<div class="">
+												<div class="feature-text">
+													<p><a href="#participation" onclick="remove_p(<?php echo $p['participantID']?>)">Reject</a></p>
+												</div>
+											</div>
+										</div><!--end of feature-->
+									</div><!--end of row-->
+									<?php
+								}
 							}
 						}
 					?>
